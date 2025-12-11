@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { Map } from 'lucide-react';
 import YeungnamHistory from '../components/YeungnamHistory';
 import YeungnamCurriculum from '../components/YeungnamCurriculum';
 import KoreanLanguageInstitute from '../components/KoreanLanguageInstitute';
@@ -239,6 +240,40 @@ const Yeungnam = () => {
 
             {/* Campus Gallery */}
             <YeungnamGallery />
+
+            {/* 3D Virtual Map Button */}
+            <div style={{ textAlign: 'center', marginTop: 'var(--spacing-lg)', marginBottom: 'var(--spacing-2xl)' }}>
+                <a
+                    href="https://exam.ync.ac.kr/VR/index.html?fbclid=IwY2xjawOnBrJleHRuA2FlbQIxMABicmlkETFDNEZ6ZlFOTDdBSWd6U29Hc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHpkYF3Ws4StOuCgx7fyBQ4zcEoU4StC2xwbJ0qUeMhd4rsss2mvxDxfg0MDB_aem_yZo_UeNX7ULoSNiYuliNcg"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-primary"
+                    style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '1.1rem',
+                        padding: '1rem 2.5rem',
+                        backgroundColor: 'var(--color-primary)',
+                        color: 'white',
+                        textDecoration: 'none',
+                        borderRadius: 'var(--radius-md)',
+                        fontWeight: '600',
+                        boxShadow: 'var(--shadow-md)',
+                        transition: 'all 0.3s ease'
+                    }}
+                    onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'translateY(-2px)';
+                        e.currentTarget.style.boxShadow = 'var(--shadow-lg)';
+                    }}
+                    onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'translateY(0)';
+                        e.currentTarget.style.boxShadow = 'var(--shadow-md)';
+                    }}
+                >
+                    <Map size={20} style={{ marginRight: '10px' }} /> 3D CAMPUS MAP
+                </a>
+            </div>
 
             {/* History Section */}
             <YeungnamHistory />
