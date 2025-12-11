@@ -148,7 +148,7 @@ const Apply = () => {
             });
 
             if (response.ok) {
-                alert('Бүртгэл амжилттай илгээгдлээ! Бид тантай удахгүй холбогдох болно. (Registration sent successfully!)');
+                alert('Бүртгэл амжилттай илгээгдлээ! Бид тантай удахгүй холбогдох болно.');
                 setFormData({
                     name: '',
                     email: '',
@@ -158,7 +158,7 @@ const Apply = () => {
                 });
             } else {
                 if (response.status === 404) {
-                    alert('Алдаа: Форм олдсонгүй. Form ID буруу байна. (Error: Form ID not found. Please check your configuration.)');
+                    alert('Алдаа: Форм олдсонгүй. Form ID буруу байна.');
                 } else {
                     const errorData = await response.json().catch(() => ({}));
                     const errorMessage = errorData.message || response.statusText;
@@ -197,14 +197,14 @@ const Apply = () => {
                 position: 'relative',
                 zIndex: 1
             }}>
-                <h1 style={{ textAlign: 'center', marginBottom: '2rem', color: 'var(--color-primary)' }}>Бүртгүүлэх (Apply Now)</h1>
+                <h1 style={{ textAlign: 'center', marginBottom: '2rem', color: 'var(--color-primary)' }}>Бүртгүүлэх</h1>
                 <p style={{ textAlign: 'center', marginBottom: '3rem', color: 'var(--color-text-muted)' }}>
                     Та доорх формыг бөглөн бидэнтэй холбогдоорой. Бид танд дэлгэрэнгүй мэдээлэл өгөх болно.
                 </p>
 
                 <form onSubmit={handleSubmit} style={{ backgroundColor: 'white', padding: '2rem', borderRadius: 'var(--radius-lg)', boxShadow: 'var(--shadow-md)' }}>
                     <div style={{ marginBottom: '1.5rem' }}>
-                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>Нэр (Full Name)</label>
+                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>Нэр</label>
                         <input
                             type="text"
                             name="name"
@@ -216,7 +216,7 @@ const Apply = () => {
                     </div>
 
                     <div style={{ marginBottom: '1.5rem' }}>
-                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>И-мэйл (Email)</label>
+                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>И-мэйл</label>
                         <input
                             type="email"
                             name="email"
@@ -228,7 +228,7 @@ const Apply = () => {
                     </div>
 
                     <div style={{ marginBottom: '1.5rem' }}>
-                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>Утас (Phone)</label>
+                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>Утас</label>
                         <input
                             type="tel"
                             name="phone"
@@ -240,7 +240,7 @@ const Apply = () => {
                     </div>
 
                     <div style={{ marginBottom: '1.5rem' }}>
-                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>Сонирхож буй хөтөлбөр (Interested Program)</label>
+                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>Сонирхож буй хөтөлбөр</label>
                         <select
                             name="major"
                             value={formData.major}
@@ -254,7 +254,7 @@ const Apply = () => {
                     </div>
 
                     <div style={{ marginBottom: '2rem' }}>
-                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>Асуулт / Хүсэлт (Message)</label>
+                        <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>Асуулт / Хүсэлт</label>
                         <textarea
                             name="message"
                             value={formData.message}
@@ -264,7 +264,7 @@ const Apply = () => {
                         ></textarea>
                     </div>
 
-                    <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>Илгээх (Submit)</button>
+                    <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>Илгээх</button>
                 </form>
             </div>
         </div>
