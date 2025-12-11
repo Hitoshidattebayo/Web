@@ -242,7 +242,7 @@ const Yeungnam = () => {
             <YeungnamGallery />
 
             {/* 3D Virtual Map Button */}
-            <div style={{ textAlign: 'center', marginTop: 'var(--spacing-lg)', marginBottom: 'var(--spacing-2xl)' }}>
+            <div style={{ textAlign: 'center', marginTop: 'var(--spacing-sm)', marginBottom: 'var(--spacing-lg)' }}>
                 <a
                     href="https://exam.ync.ac.kr/VR/index.html?fbclid=IwY2xjawOnBrJleHRuA2FlbQIxMABicmlkETFDNEZ6ZlFOTDdBSWd6U29Hc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHpkYF3Ws4StOuCgx7fyBQ4zcEoU4StC2xwbJ0qUeMhd4rsss2mvxDxfg0MDB_aem_yZo_UeNX7ULoSNiYuliNcg"
                     target="_blank"

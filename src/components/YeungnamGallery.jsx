@@ -27,7 +27,7 @@ const YeungnamGallery = () => {
     };
 
     return (
-        <section className="section" style={{ padding: 'var(--spacing-xl) 0' }}>
+        <section className="section" style={{ padding: 'var(--spacing-xl) 0 var(--spacing-md)' }}>
             <div className="container">
                 <div style={{ position: 'relative', width: '100%' }}>
                     {/* Main Image */}
