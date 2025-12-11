@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { Map } from 'lucide-react';
 import campusMapImg from '../assets/cia-campus-map.jpg';
 import campus2 from '../assets/campus-2.jpg';
 import campus3 from '../assets/campus-3.jpg';
@@ -245,7 +246,9 @@ const CampusMap = () => {
                             color: 'white',
                             textDecoration: 'none',
                             borderRadius: 'var(--radius-md)',
-                            display: 'inline-block',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
                             fontWeight: '600',
                             boxShadow: 'var(--shadow-md)',
                             transition: 'all 0.3s ease'
@@ -259,7 +262,7 @@ const CampusMap = () => {
                             e.currentTarget.style.boxShadow = 'var(--shadow-md)';
                         }}
                     >
-                        🗺️ 3D ВИРТУАЛ АЯЛАЛ
+                        <Map size={20} style={{ marginRight: '10px' }} /> 3D CAMPUS MAP
                     </a>
                 </div>
 
