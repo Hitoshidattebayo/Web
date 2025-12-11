@@ -130,10 +130,45 @@ const Apply = () => {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        alert('Бүртгэл амжилттай илгээгдлээ! Бид тантай удахгүй холбогдох болно. (Registration sent successfully!)');
-        // Here you would typically send the data to a backend
+
+        // Formspark ID provided by user
+        const formId = 'dJmh7S9jT';
+        const formUrl = `https://submit-form.com/${formId}`;
+
+        try {
+            const response = await fetch(formUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            if (response.ok) {
+                alert('Бүртгэл амжилттай илгээгдлээ! Бид тантай удахгүй холбогдох болно. (Registration sent successfully!)');
+                setFormData({
+                    name: '',
+                    email: '',
+                    phone: '',
+                    major: '',
+                    message: ''
+                });
+            } else {
+                if (response.status === 404) {
+                    alert('Алдаа: Форм олдсонгүй. Form ID буруу байна. (Error: Form ID not found. Please check your configuration.)');
+                } else {
+                    const errorData = await response.json().catch(() => ({}));
+                    const errorMessage = errorData.message || response.statusText;
+                    alert(`Уучлаарай, алдаа гарлаа. (Error: ${response.status} ${errorMessage})`);
+                }
+            }
+        } catch (error) {
+            console.error('Form submission error:', error);
+            alert(`Сүлжээний алдаа гарлаа. (${error.message})`);
+        }
     };
 
     return (
