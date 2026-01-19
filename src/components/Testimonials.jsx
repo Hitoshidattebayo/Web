@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Quote, ArrowLeft, ArrowRight } from 'lucide-react';
+import { Quote, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const Testimonials = () => {
     // Placeholder data based on the image style
@@ -24,11 +24,46 @@ const Testimonials = () => {
 
     return (
         <section style={{
-            paddingBottom: '4rem',
-            marginBottom: '8rem',
+            paddingBottom: '2rem',
+            marginBottom: '2rem',
             position: 'relative',
         }}>
-            <div className="container">
+            <div className="container" style={{ position: 'relative' }}>
+                {/* Left Button */}
+                <button style={{
+                    position: 'absolute',
+                    left: '-60px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    width: '50px',
+                    height: '50px',
+                    borderRadius: '50%',
+                    backgroundColor: 'white',
+                    border: '1px solid rgba(0,0,0,0.05)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer',
+                    boxShadow: '0 4px 10px rgba(0,0,0,0.05)',
+                    zIndex: 10,
+                    transition: 'all 0.3s ease'
+                }}
+                    onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)';
+                        e.currentTarget.style.boxShadow = '0 8px 15px rgba(0,0,0,0.1)';
+                        e.currentTarget.style.borderColor = '#2c3e50';
+                        e.currentTarget.style.color = '#2c3e50';
+                    }}
+                    onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
+                        e.currentTarget.style.boxShadow = '0 4px 10px rgba(0,0,0,0.05)';
+                        e.currentTarget.style.borderColor = 'rgba(0,0,0,0.05)';
+                        e.currentTarget.style.color = 'inherit';
+                    }}
+                >
+                    <ChevronLeft size={24} color="#666" />
+                </button>
+
                 <div style={{
                     display: 'grid',
                     gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
@@ -76,60 +111,40 @@ const Testimonials = () => {
                     ))}
                 </div>
 
-                {/* Navigation Buttons (Visual Only for now as grid shows all 3) */}
-                <div style={{
+                {/* Right Button */}
+                <button style={{
+                    position: 'absolute',
+                    right: '-60px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    width: '50px',
+                    height: '50px',
+                    borderRadius: '50%',
+                    backgroundColor: 'white',
+                    border: '1px solid rgba(0,0,0,0.05)',
                     display: 'flex',
-                    justifyContent: 'flex-end',
-                    gap: '1rem',
-                    paddingRight: '1rem'
-                }}>
-                    <button style={{
-                        width: '45px',
-                        height: '45px',
-                        borderRadius: '50%',
-                        border: '1px solid #ddd',
-                        backgroundColor: 'white',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        cursor: 'pointer',
-                        color: '#888',
-                        transition: 'all 0.2s'
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer',
+                    boxShadow: '0 4px 10px rgba(0,0,0,0.05)',
+                    zIndex: 10,
+                    transition: 'all 0.3s ease'
+                }}
+                    onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)';
+                        e.currentTarget.style.boxShadow = '0 8px 15px rgba(0,0,0,0.1)';
+                        e.currentTarget.style.borderColor = '#2c3e50';
+                        e.currentTarget.style.color = '#2c3e50';
                     }}
-                        onMouseEnter={(e) => {
-                            e.currentTarget.style.borderColor = '#333';
-                            e.currentTarget.style.color = '#333';
-                        }}
-                        onMouseLeave={(e) => {
-                            e.currentTarget.style.borderColor = '#ddd';
-                            e.currentTarget.style.color = '#888';
-                        }}
-                    >
-                        <ArrowLeft size={20} />
-                    </button>
-                    <button style={{
-                        width: '45px',
-                        height: '45px',
-                        borderRadius: '50%',
-                        border: '1px solid #333', // Active style
-                        backgroundColor: 'white',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        cursor: 'pointer',
-                        color: '#333',
-                        transition: 'all 0.2s'
+                    onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
+                        e.currentTarget.style.boxShadow = '0 4px 10px rgba(0,0,0,0.05)';
+                        e.currentTarget.style.borderColor = 'rgba(0,0,0,0.05)';
+                        e.currentTarget.style.color = 'inherit';
                     }}
-                        onMouseEnter={(e) => {
-                            e.currentTarget.style.backgroundColor = '#f5f5f5';
-                        }}
-                        onMouseLeave={(e) => {
-                            e.currentTarget.style.backgroundColor = 'white';
-                        }}
-                    >
-                        <ArrowRight size={20} />
-                    </button>
-                </div>
+                >
+                    <ChevronRight size={24} color="#666" />
+                </button>
             </div>
         </section>
     );

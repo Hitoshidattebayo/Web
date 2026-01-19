@@ -1,11 +1,16 @@
 import React, { useRef } from 'react';
 import Hero from '../components/Hero';
-import { BookOpen, Users, Globe, Award, Briefcase, GraduationCap, CheckCircle, Compass, Map, HeartHandshake, ArrowRight, Calendar } from 'lucide-react';
+import { BookOpen, Users, Globe, Award, Briefcase, GraduationCap, CheckCircle, Compass, Map, HeartHandshake, ArrowRight, Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
 import useParticleAnimation from '../hooks/useParticleAnimation';
 
 import TargetAudience from '../components/TargetAudience';
 import Testimonials from '../components/Testimonials';
 import FaqSection from '../components/FaqSection';
+import sticky1 from '../assets/sticky1.png';
+import sticky2 from '../assets/sticky2.png';
+import sticky3 from '../assets/sticky3.png';
+import sticky4 from '../assets/sticky4.png';
+import SocialProofReels from '../components/SocialProofReels';
 
 const Home = () => {
     const ctaCanvasRef = useRef(null);
@@ -226,7 +231,7 @@ const Home = () => {
             <TargetAudience />
 
             {/* Welcome Section */}
-            <section className="section">
+            <section className="section" style={{ paddingTop: '0' }}>
                 <div className="container">
                     {/* Features Grid (Why Choose Us) */}
                     {/* Process Cycle (How It Works) */}
@@ -364,12 +369,36 @@ const Home = () => {
                                 .process-item-4 {
                                     animation-delay: -90s;
                                 }
+
+                                /* Sticky Notes */
+                                .sticky-note {
+                                    display: block;
+                                    position: absolute;
+                                    width: 200px; /* Adjust size as needed */
+                                    z-index: 4;
+                                    pointer-events: none;
+                                    filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1));
+                                    transition: transform 0.3s ease;
+                                }
+                                .sticky-note:hover {
+                                    transform: scale(1.05) rotate(0deg) !important;
+                                }
                             }
+                            
+                            /* Mobile Hide */
+                            .sticky-note { display: none; }
+                            @media (min-width: 992px) { .sticky-note { display: block; } }
                         `}</style>
 
                         <div className="process-container">
                             {/* The Dashed Circle Background */}
                             <div className="process-circle-bg"></div>
+
+                            {/* Sticky Notes (Desktop Only) */}
+                            <img src={sticky4} alt="Chi Tantsaaraa Bish Shuu" className="sticky-note" style={{ top: '10%', left: '-15%', width: '220px', transform: 'rotate(-15deg)' }} />
+                            <img src={sticky2} alt="Chamtai Hamt Bid Baina" className="sticky-note" style={{ top: '5%', right: '-18%', width: '280px', transform: 'rotate(12deg)' }} />
+                            <img src={sticky3} alt="Chi Chadnaa" className="sticky-note" style={{ bottom: '5%', left: '-18%', width: '270px', transform: 'rotate(5deg)' }} />
+                            <img src={sticky1} alt="Hamtdaa Shiideye" className="sticky-note" style={{ bottom: '5%', right: '-15%', width: '270px', transform: 'rotate(-12deg)' }} />
 
                             {/* Center Title Group */}
                             <div className="process-center-title">
@@ -401,10 +430,10 @@ const Home = () => {
                             {/* Process Items */}
                             <div className="process-grid">
                                 {[
-                                    { icon: <Compass size={32} />, title: 'UNDERSTAND YOUR GOALS', desc: 'Таны зорилго, хүсэл мөрөөдлийг тодорхойлж, хамгийн зөв чиглэлийг гаргана.', step: 1 },
-                                    { icon: <Map size={32} />, title: 'BUILD A CLEAR EDUCATION PLAN', desc: 'Суралцах сургууль, мэргэжил, тэтгэлэг зэрэгт тохирсон нарийвчилсан төлөвлөгөө.', step: 2 },
-                                    { icon: <GraduationCap size={32} />, title: 'PREPARE & APPLY WITH GUIDANCE', desc: 'Элсэлтийн материал, ярилцлага, визний бүрдүүлэлтэд мэргэжлийн туслалцаа.', step: 3 },
-                                    { icon: <HeartHandshake size={32} />, title: 'SUPPORT UNTIL RESULTS', desc: 'Зөвхөн элсэлт биш, амжилттай суралцаж, төгсөх хүртэлх байнгын дэмжлэг.', step: 4 }
+                                    { icon: <Compass size={32} />, title: 'ЗОРИЛГЫГ ТОДОРХОЙЛНО', desc: 'Таны зорилго, нөхцөл байдлыг ойлгоно.', step: 1 },
+                                    { icon: <Map size={32} />, title: 'ТӨЛӨВЛӨГӨӨ ГАРГАНА', desc: 'Танд тохирсон боловсролын тодорхой төлөвлөгөө боловсруулна.', step: 2 },
+                                    { icon: <GraduationCap size={32} />, title: 'БЭЛТГЭЖ, ЧИГЛҮҮЛНЭ', desc: 'Бэлтгэл, сургалт, зөвлөгөөг шат дараатайгаар үзүүлнэ.', step: 3 },
+                                    { icon: <HeartHandshake size={32} />, title: 'ҮР ДҮНД ХҮРГЭНЭ', desc: 'Эцсийн үр дүн гартал боловсролын хамтрагч байж дэмжинэ.', step: 4 }
                                 ].map((item, idx) => (
                                     <div key={idx} className={`process-item process-item-${idx + 1}`}>
                                         <div style={{
@@ -618,6 +647,133 @@ const Home = () => {
                             </div>
                         </div>
 
+                        {/* Blog Section (New) */}
+                        <div style={{ position: 'relative', marginTop: '2rem', marginBottom: '4rem' }}>
+                            {/* Left Button */}
+                            <button style={{
+                                position: 'absolute',
+                                left: '-50px',
+                                top: '50%',
+                                transform: 'translateY(-50%)',
+                                width: '40px',
+                                height: '40px',
+                                borderRadius: '50%',
+                                backgroundColor: 'white',
+                                border: '1px solid rgba(0,0,0,0.1)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                cursor: 'pointer',
+                                boxShadow: '0 4px 10px rgba(0,0,0,0.05)',
+                                zIndex: 10,
+                                transition: 'all 0.3s ease'
+                            }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)';
+                                    e.currentTarget.style.boxShadow = '0 8px 15px rgba(0,0,0,0.1)';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
+                                    e.currentTarget.style.boxShadow = '0 4px 10px rgba(0,0,0,0.05)';
+                                }}
+                            >
+                                <ChevronLeft size={24} color="#2c3e50" />
+                            </button>
+
+                            <div style={{
+                                display: 'grid',
+                                gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                                gap: '1.5rem',
+                            }}>
+                                {[
+                                    { id: 1, title: 'BLOG NAME', img: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=600&q=80' },
+                                    { id: 2, title: 'BLOG NAME', img: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?auto=format&fit=crop&w=600&q=80' },
+                                    { id: 3, title: 'BLOG NAME', img: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=600&q=80' },
+                                    { id: 4, title: 'BLOG NAME', img: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=600&q=80' }
+                                ].map((item) => (
+                                    <div key={item.id} style={{
+                                        height: '250px',
+                                        borderRadius: '20px',
+                                        position: 'relative',
+                                        overflow: 'hidden',
+                                        cursor: 'pointer',
+                                        boxShadow: '0 10px 20px rgba(0,0,0,0.1)'
+                                    }}>
+                                        <div style={{
+                                            width: '100%',
+                                            height: '100%',
+                                            backgroundImage: `url(${item.img})`,
+                                            backgroundSize: 'cover',
+                                            backgroundPosition: 'center',
+                                            transition: 'transform 0.5s ease',
+                                            position: 'absolute',
+                                            top: 0,
+                                            left: 0
+                                        }}
+                                            onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+                                            onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                                        />
+                                        {/* Gradient Overlay */}
+                                        <div style={{
+                                            position: 'absolute',
+                                            top: 0,
+                                            left: 0,
+                                            width: '100%',
+                                            height: '100%',
+                                            background: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(231, 76, 60, 0.9) 100%)',
+                                            pointerEvents: 'none'
+                                        }} />
+
+                                        <div style={{
+                                            position: 'absolute',
+                                            bottom: '1.5rem',
+                                            left: '1.5rem',
+                                            color: 'white',
+                                            fontWeight: '500', // Thinner font weight
+                                            fontSize: '1.1rem',
+                                            textTransform: 'uppercase',
+                                            letterSpacing: '0.5px',
+                                            pointerEvents: 'none',
+                                            zIndex: 2
+                                        }}>
+                                            {item.title}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* Right Button */}
+                            <button style={{
+                                position: 'absolute',
+                                right: '-50px',
+                                top: '50%',
+                                transform: 'translateY(-50%)',
+                                width: '40px',
+                                height: '40px',
+                                borderRadius: '50%',
+                                backgroundColor: 'white',
+                                border: '1px solid rgba(0,0,0,0.1)',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                cursor: 'pointer',
+                                boxShadow: '0 4px 10px rgba(0,0,0,0.05)',
+                                zIndex: 10,
+                                transition: 'all 0.3s ease'
+                            }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)';
+                                    e.currentTarget.style.boxShadow = '0 8px 15px rgba(0,0,0,0.1)';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
+                                    e.currentTarget.style.boxShadow = '0 4px 10px rgba(0,0,0,0.05)';
+                                }}
+                            >
+                                <ChevronRight size={24} color="#2c3e50" />
+                            </button>
+                        </div>
+
                         {/* CTA Button */}
                         <div style={{ display: 'flex', justifyContent: 'center' }}>
                             <button style={{
@@ -630,11 +786,12 @@ const Home = () => {
                                 fontWeight: '700',
                                 display: 'flex',
                                 alignItems: 'center',
+                                justifyContent: 'center',
                                 gap: '1rem',
                                 cursor: 'pointer',
                                 boxShadow: '0 10px 20px rgba(231, 76, 60, 0.3)',
                                 transition: 'all 0.3s ease',
-                                width: 'min(100%, 600px)'
+                                maxWidth: '100%'
                             }}
                                 onMouseEnter={(e) => {
                                     e.currentTarget.style.transform = 'translateY(-3px)';
@@ -697,6 +854,9 @@ const Home = () => {
 
                     {/* Testimonials Section */}
                     <Testimonials />
+
+                    {/* Social Proof Reels Section */}
+                    <SocialProofReels />
                 </div>
             </section>
 
@@ -709,8 +869,8 @@ const Home = () => {
                 justifyContent: 'center',
                 backgroundColor: '#ffffff',
                 overflow: 'hidden',
-                padding: '8rem 0',
-                marginBottom: '8rem'
+                padding: '2rem 0',
+                marginBottom: '2rem'
             }}>
                 {/* Interactive Canvas Background */}
                 <canvas

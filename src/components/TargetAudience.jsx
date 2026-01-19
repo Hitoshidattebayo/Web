@@ -3,6 +3,7 @@ import { GraduationCap, Users, Briefcase, HelpCircle, Compass, Target, Shield, T
 
 const TargetAudience = () => {
     const [activeTab, setActiveTab] = useState('students');
+    const [isExpanded, setIsExpanded] = useState(false);
 
     const tabs = [
         { id: 'students', label: 'СУРАГЧИД, ОЮУТНУУД', icon: <GraduationCap size={20} />, color: '#3498db', bg: '#EBF5FB' },
@@ -121,7 +122,7 @@ const TargetAudience = () => {
     };
 
     return (
-        <section style={{ paddingBottom: '4rem', marginTop: '3rem', marginBottom: '8rem', position: 'relative', zIndex: 15 }}>
+        <section style={{ paddingBottom: '0', marginTop: '3rem', marginBottom: '0', position: 'relative', zIndex: 15 }}>
             <div className="container">
                 {/* Tabs */}
                 <div style={{
@@ -223,7 +224,7 @@ const TargetAudience = () => {
                                     flexDirection: 'column',
                                     gap: '0.8rem'
                                 }}>
-                                    {section.items.map((item, i) => (
+                                    {(isExpanded ? section.items : section.items.slice(0, 1)).map((item, i) => (
                                         <li key={i} style={{
                                             fontSize: '0.95rem',
                                             color: '#546e7a',
@@ -246,6 +247,35 @@ const TargetAudience = () => {
                                 </ul>
                             </div>
                         ))}
+                    </div>
+
+                    {/* Expand/Collapse Button */}
+                    <div style={{
+                        textAlign: 'center',
+                        marginTop: '2rem',
+                        paddingTop: '1rem',
+                        borderTop: isExpanded ? '1px solid rgba(0,0,0,0.05)' : 'none'
+                    }}>
+                        <button
+                            onClick={() => setIsExpanded(!isExpanded)}
+                            style={{
+                                background: 'none',
+                                border: 'none',
+                                color: '#34495E',
+                                fontSize: '0.9rem',
+                                fontWeight: '700',
+                                cursor: 'pointer',
+                                textTransform: 'uppercase',
+                                letterSpacing: '1px',
+                                padding: '0.5rem 1rem',
+                                borderBottom: '2px solid transparent',
+                                transition: 'all 0.3s'
+                            }}
+                            onMouseEnter={(e) => e.target.style.borderBottom = '2px solid #34495E'}
+                            onMouseLeave={(e) => e.target.style.borderBottom = '2px solid transparent'}
+                        >
+                            {isExpanded ? 'ХУРААХ <<<' : 'ЦААШ УНШИХ >>>'}
+                        </button>
                     </div>
                 </div>
                 <style>{`

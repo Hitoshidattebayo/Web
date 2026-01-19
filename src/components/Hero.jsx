@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { Play } from 'lucide-react';
 import logo from '../assets/mu-logo.png';
 
 const Hero = () => {
@@ -118,7 +119,7 @@ const Hero = () => {
     return (
         <section style={{
             position: 'relative',
-            height: '100vh',
+            minHeight: '100vh',
             width: '100%',
             display: 'flex',
             alignItems: 'center',
@@ -144,7 +145,7 @@ const Hero = () => {
                 position: 'relative',
                 zIndex: 1,
                 textAlign: 'center',
-                padding: 'clamp(1rem, 3vw, 2rem)',
+                padding: 'clamp(1rem, 3vw, 2rem) clamp(1rem, 3vw, 2rem) 10rem', // Increased bottom padding significantly
                 maxWidth: '1200px', // Increased width to fit slogan
                 margin: '0 auto'
             }}>
@@ -175,16 +176,76 @@ const Hero = () => {
                 <p style={{
                     fontSize: 'clamp(1rem, 2.5vw, 1.2rem)',
                     color: '#7f8c8d',
-                    marginBottom: 'clamp(2rem, 4vw, 3rem)',
+                    marginBottom: '2rem',
                     maxWidth: '600px',
-                    margin: '0 auto clamp(2rem, 4vw, 3rem)'
+                    margin: '0 auto 2rem'
                 }}>
                     Бид таны зөв сонголт, бэлтгэл, амжилт бүрт тань цуг
                 </p>
 
+                {/* Introduction Video Placeholder (16:9) */}
+                <div style={{
+                    maxWidth: '800px',
+                    width: '100%',
+                    aspectRatio: '16/9',
+                    margin: '0 auto 1rem',
+                    borderRadius: '20px',
+                    overflow: 'hidden',
+                    boxShadow: '0 20px 50px rgba(0,0,0,0.15)',
+                    position: 'relative',
+                    backgroundColor: '#000',
+                    border: '4px solid white',
+                    cursor: 'pointer'
+                }}>
+                    <div style={{
+                        width: '100%',
+                        height: '100%',
+                        background: 'linear-gradient(135deg, #2c3e50 0%, #3498db 100%)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        position: 'relative'
+                    }}>
+                        {/* Play Button */}
+                        <div style={{
+                            width: '90px',
+                            height: '90px',
+                            borderRadius: '50%',
+                            backgroundColor: 'rgba(255, 255, 255, 0.25)',
+                            backdropFilter: 'blur(10px)',
+                            border: '1px solid rgba(255, 255, 255, 0.5)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            boxShadow: '0 10px 30px rgba(0,0,0,0.2)',
+                            transition: 'transform 0.3s ease'
+                        }}
+                            onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+                            onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                        >
+                            <Play size={40} fill="white" color="white" style={{ marginLeft: '5px' }} />
+                        </div>
+
+                        {/* Label */}
+                        <div style={{
+                            position: 'absolute',
+                            bottom: '20px',
+                            left: '20px',
+                            color: 'white',
+                            backgroundColor: 'rgba(0,0,0,0.5)',
+                            padding: '5px 15px',
+                            borderRadius: '20px',
+                            fontSize: '0.9rem',
+                            fontWeight: '600'
+                        }}>
+                            Танилцуулга бичлэг үзэх
+                        </div>
+                    </div>
+                </div>
+
                 <a href="/apply" className="btn btn-primary" style={{
-                    padding: 'clamp(0.875rem, 2vw, 1.2rem) clamp(2rem, 4vw, 3.5rem)',
-                    fontSize: 'clamp(0.95rem, 2vw, 1.1rem)',
+                    padding: '0.8rem 2.5rem',
+                    fontSize: '1rem',
                     borderRadius: '50px',
                     boxShadow: '0 10px 30px rgba(231, 76, 60, 0.3)',
                     transition: 'all 0.3s ease',

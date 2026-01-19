@@ -32,7 +32,7 @@ const FaqSection = () => {
     ];
 
     return (
-        <section style={{ padding: '8rem 0', backgroundColor: '#f8f9fa' }}>
+        <section style={{ padding: '4rem 0', backgroundColor: '#f8f9fa' }}>
             <div className="container">
                 <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
                     <span style={{
