@@ -145,7 +145,8 @@ const Hero = () => {
                 zIndex: 1,
                 textAlign: 'center',
                 padding: 'clamp(1rem, 3vw, 2rem)',
-                maxWidth: '800px'
+                maxWidth: '1200px', // Increased width to fit slogan
+                margin: '0 auto'
             }}>
                 <img
                     src={logo}
@@ -159,15 +160,16 @@ const Hero = () => {
                 />
 
                 <h1 style={{
-                    fontSize: 'clamp(2.5rem, 5vw, 4.5rem)',
+                    fontSize: 'clamp(1.5rem, 4vw, 3.5rem)', // Adjusted for better fit
                     fontWeight: '900',
                     color: '#2c3e50',
                     marginBottom: '1rem',
                     lineHeight: '1.1',
-                    letterSpacing: '-1px'
+                    letterSpacing: '-1px',
+                    textTransform: 'uppercase' // Added uppercase
                 }}>
-                    STUDY NEVER<br />
-                    <span style={{ color: '#e74c3c' }}>WASTE YOUR TIME</span>
+                    Дэлхийн боловсролын боломж.<br />
+                    <span style={{ color: '#e74c3c' }}>Тодорхой чиглэл. Бодит үр дүн</span>
                 </h1>
 
                 <p style={{
@@ -177,7 +179,7 @@ const Hero = () => {
                     maxWidth: '600px',
                     margin: '0 auto clamp(2rem, 4vw, 3rem)'
                 }}>
-                    ИРЭЭДҮЙН МӨРӨӨДЛӨӨ БОДИТ БОЛГОХ БОЛОМЖ
+                    Бид таны зөв сонголт, бэлтгэл, амжилт бүрт тань цуг
                 </p>
 
                 <a href="/apply" className="btn btn-primary" style={{
@@ -190,7 +192,7 @@ const Hero = () => {
                     letterSpacing: '1px',
                     fontWeight: '700'
                 }}>
-                    БҮРТГҮҮЛЭХ
+                    Үнэгүй зөвлөгөөнд хамрагдах
                 </a>
             </div>
         </section>
