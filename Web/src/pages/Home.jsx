@@ -649,7 +649,7 @@ const Home = () => {
                                 ]).map((item) => (
                                     <a
                                         key={item._id || item.id}
-                                        href={`http://localhost:3000/${item.slug?.current || ''}`}
+                                        href={`${import.meta.env.VITE_BLOG_URL || 'http://localhost:3000'}/${item.slug?.current || ''}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="mobile-scroll-item"

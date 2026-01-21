@@ -10,6 +10,11 @@ export default defineConfig({
   projectId: '83x9r4rp',
   dataset: 'production',
 
+  deployment: {
+    appId: 'powqxdmkfx0o0cl1u2h78x70',
+  },
+
+
   plugins: [
     structureTool({
       structure: (S) =>
