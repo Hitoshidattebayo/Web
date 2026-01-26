@@ -133,7 +133,8 @@ const FaqSection = () => {
                                 <div style={{
                                     padding: '0 2rem 1.5rem 3.5rem', // Indented to align with text
                                     color: '#555',
-                                    lineHeight: '1.6'
+                                    lineHeight: '1.6',
+                                    whiteSpace: 'pre-line' // Preserves line breaks from Sanity
                                 }}>
                                     {faq.answer}
                                 </div>
