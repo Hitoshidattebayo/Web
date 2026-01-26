@@ -82,7 +82,7 @@ const Home = () => {
                         }
                     }
                 }`;
-                const postsQuery = `*[_type == "post"] | order(publishedAt desc)[0...4] {
+                const postsQuery = `*[_type == "post" && defined(publishedAt) && publishedAt < now()] | order(publishedAt desc)[0...4] {
                     _id,
                     title,
                     slug,
@@ -603,125 +603,121 @@ const Home = () => {
                             ))}
                         </div>
 
-                        {/* Blog Section (New) */}
-                        <div style={{ position: 'relative', marginTop: '2rem', marginBottom: '4rem' }}>
-                            {/* Left Button */}
-                            <button className="desktop-only-btn" style={{
-                                position: 'absolute',
-                                left: '-60px',
-                                top: '50%',
-                                transform: 'translateY(-50%)',
-                                width: '50px',
-                                height: '50px',
-                                borderRadius: '50%',
-                                backgroundColor: 'white',
-                                border: '1px solid rgba(0,0,0,0.1)',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                cursor: 'pointer',
-                                boxShadow: '0 4px 10px rgba(0,0,0,0.05)',
-                                zIndex: 10,
-                                transition: 'all 0.3s ease'
-                            }}
-                                onMouseEnter={(e) => {
-                                    e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)';
-                                    e.currentTarget.style.boxShadow = '0 8px 15px rgba(0,0,0,0.1)';
+                        {/* Blog Section (New) - Only show if posts exist */}
+                        {posts.length > 0 && (
+                            <div style={{ position: 'relative', marginTop: '2rem', marginBottom: '4rem' }}>
+                                {/* Left Button */}
+                                <button className="desktop-only-btn" style={{
+                                    position: 'absolute',
+                                    left: '-60px',
+                                    top: '50%',
+                                    transform: 'translateY(-50%)',
+                                    width: '50px',
+                                    height: '50px',
+                                    borderRadius: '50%',
+                                    backgroundColor: 'white',
+                                    border: '1px solid rgba(0,0,0,0.1)',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    cursor: 'pointer',
+                                    boxShadow: '0 4px 10px rgba(0,0,0,0.05)',
+                                    zIndex: 10,
+                                    transition: 'all 0.3s ease'
                                 }}
-                                onMouseLeave={(e) => {
-                                    e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
-                                    e.currentTarget.style.boxShadow = '0 4px 10px rgba(0,0,0,0.05)';
-                                }}
-                            >
-                                <ChevronLeft size={24} color="#2c3e50" />
-                            </button>
+                                    onMouseEnter={(e) => {
+                                        e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)';
+                                        e.currentTarget.style.boxShadow = '0 8px 15px rgba(0,0,0,0.1)';
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
+                                        e.currentTarget.style.boxShadow = '0 4px 10px rgba(0,0,0,0.05)';
+                                    }}
+                                >
+                                    <ChevronLeft size={24} color="#2c3e50" />
+                                </button>
 
-                            <div className="mobile-scroll-container" style={{
-                                display: 'grid',
-                                gridTemplateColumns: 'repeat(4, 1fr)',
-                                gap: '1.5rem',
-                            }}>
-                                {(posts.length > 0 ? posts : [
-                                    { id: 1, title: 'BLOG NAME', img: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=600&q=80' },
-                                    { id: 2, title: 'BLOG NAME', img: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?auto=format&fit=crop&w=600&q=80' },
-                                    { id: 3, title: 'BLOG NAME', img: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=600&q=80' },
-                                    { id: 4, title: 'BLOG NAME', img: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=600&q=80' }
-                                ]).map((item) => {
-                                    const blogUrl = import.meta.env.VITE_BLOG_URL;
-                                    const isDefaultBlogUrl = !blogUrl || blogUrl.includes('your-nextjs-blog');
+                                <div className="mobile-scroll-container" style={{
+                                    display: 'grid',
+                                    gridTemplateColumns: 'repeat(4, 1fr)',
+                                    gap: '1.5rem',
+                                }}>
+                                    {posts.map((item) => {
+                                        const blogUrl = import.meta.env.VITE_BLOG_URL;
+                                        const isDefaultBlogUrl = !blogUrl || blogUrl.includes('your-nextjs-blog');
 
-                                    if (isDefaultBlogUrl) {
-                                        console.warn('VITE_BLOG_URL is not set or is using the placeholder. Blog links will not work correctly.');
-                                    }
+                                        if (isDefaultBlogUrl) {
+                                            console.warn('VITE_BLOG_URL is not set or is using the placeholder. Blog links will not work correctly.');
+                                        }
 
-                                    return (
-                                        <a
-                                            key={item._id || item.id}
-                                            href={isDefaultBlogUrl ? '#' : `${blogUrl}/${item.slug?.current || ''}`}
-                                            target={isDefaultBlogUrl ? '_self' : '_blank'}
-                                            rel="noopener noreferrer"
-                                            onClick={(e) => {
-                                                if (isDefaultBlogUrl) {
-                                                    e.preventDefault();
-                                                    alert('Blog URL is not configured yet. Please check Vercel Environment Variables.');
-                                                }
-                                            }}
-                                            className="mobile-scroll-item"
-                                            style={{
-                                                aspectRatio: '1/1',
-                                                borderRadius: '20px',
-                                                position: 'relative',
-                                                overflow: 'hidden',
-                                                cursor: 'pointer',
-                                                boxShadow: '0 10px 20px rgba(0,0,0,0.1)',
-                                                textDecoration: 'none',
-                                                display: 'block'
-                                            }}
-                                        >
-                                            <div style={{
-                                                width: '100%',
-                                                height: '100%',
-                                                backgroundImage: `url(${item.img || 'https://via.placeholder.com/300'})`,
-                                                backgroundSize: 'cover',
-                                                backgroundPosition: 'center',
-                                                transition: 'transform 0.5s ease',
-                                                position: 'absolute',
-                                                top: 0,
-                                                left: 0
-                                            }}
-                                                onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
-                                                onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                                            />
-                                            {/* Gradient Overlay */}
-                                            <div style={{
-                                                position: 'absolute',
-                                                top: 0,
-                                                left: 0,
-                                                width: '100%',
-                                                height: '100%',
-                                                background: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(231, 76, 60, 0.9) 100%)',
-                                                pointerEvents: 'none'
-                                            }} />
+                                        return (
+                                            <a
+                                                key={item._id || item.id}
+                                                href={isDefaultBlogUrl ? '#' : `${blogUrl}/${item.slug?.current || ''}`}
+                                                target={isDefaultBlogUrl ? '_self' : '_blank'}
+                                                rel="noopener noreferrer"
+                                                onClick={(e) => {
+                                                    if (isDefaultBlogUrl) {
+                                                        e.preventDefault();
+                                                        alert('Blog URL is not configured yet. Please check Vercel Environment Variables.');
+                                                    }
+                                                }}
+                                                className="mobile-scroll-item"
+                                                style={{
+                                                    aspectRatio: '1/1',
+                                                    borderRadius: '20px',
+                                                    position: 'relative',
+                                                    overflow: 'hidden',
+                                                    cursor: 'pointer',
+                                                    boxShadow: '0 10px 20px rgba(0,0,0,0.1)',
+                                                    textDecoration: 'none',
+                                                    display: 'block'
+                                                }}
+                                            >
+                                                <div style={{
+                                                    width: '100%',
+                                                    height: '100%',
+                                                    backgroundImage: `url(${item.img || 'https://via.placeholder.com/300'})`,
+                                                    backgroundSize: 'cover',
+                                                    backgroundPosition: 'center',
+                                                    transition: 'transform 0.5s ease',
+                                                    position: 'absolute',
+                                                    top: 0,
+                                                    left: 0
+                                                }}
+                                                    onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+                                                    onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                                                />
+                                                {/* Gradient Overlay */}
+                                                <div style={{
+                                                    position: 'absolute',
+                                                    top: 0,
+                                                    left: 0,
+                                                    width: '100%',
+                                                    height: '100%',
+                                                    background: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(231, 76, 60, 0.9) 100%)',
+                                                    pointerEvents: 'none'
+                                                }} />
 
-                                            <div style={{
-                                                position: 'absolute',
-                                                bottom: '1.5rem',
-                                                left: '1.5rem',
-                                                color: 'white',
-                                                fontWeight: '500', // Thinner font weight
-                                                fontSize: '1.1rem',
-                                                textTransform: 'uppercase',
-                                                letterSpacing: '0.5px',
-                                                pointerEvents: 'none',
-                                                zIndex: 2
-                                            }}>
-                                                {item.title}
-                                            </div>
-                                        </a>
-                                    );
-                                })}
-                            </div>
-                            <style>{`
+                                                <div style={{
+                                                    position: 'absolute',
+                                                    bottom: '1.5rem',
+                                                    left: '1.5rem',
+                                                    color: 'white',
+                                                    fontWeight: '500', // Thinner font weight
+                                                    fontSize: '1.1rem',
+                                                    textTransform: 'uppercase',
+                                                    letterSpacing: '0.5px',
+                                                    pointerEvents: 'none',
+                                                    zIndex: 2
+                                                }}>
+                                                    {item.title}
+                                                </div>
+                                            </a>
+                                        );
+                                    })}
+                                </div>
+                                <style>{`
                                 @media (max-width: 992px) {
                                     .mobile-scroll-container {
                                         display: flex !important;
@@ -744,44 +740,45 @@ const Home = () => {
                                 }
                             `}</style>
 
-                            {/* Right Button */}
-                            <button className="desktop-only-btn" style={{
-                                position: 'absolute',
-                                right: '-60px',
-                                top: '50%',
-                                transform: 'translateY(-50%)',
-                                width: '50px',
-                                height: '50px',
-                                borderRadius: '50%',
-                                backgroundColor: 'white',
-                                border: '1px solid rgba(0,0,0,0.1)',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                cursor: 'pointer',
-                                boxShadow: '0 4px 10px rgba(0,0,0,0.05)',
-                                zIndex: 10,
-                                transition: 'all 0.3s ease'
-                            }}
-                                onMouseEnter={(e) => {
-                                    e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)';
-                                    e.currentTarget.style.boxShadow = '0 8px 15px rgba(0,0,0,0.1)';
+                                {/* Right Button */}
+                                <button className="desktop-only-btn" style={{
+                                    position: 'absolute',
+                                    right: '-60px',
+                                    top: '50%',
+                                    transform: 'translateY(-50%)',
+                                    width: '50px',
+                                    height: '50px',
+                                    borderRadius: '50%',
+                                    backgroundColor: 'white',
+                                    border: '1px solid rgba(0,0,0,0.1)',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    cursor: 'pointer',
+                                    boxShadow: '0 4px 10px rgba(0,0,0,0.05)',
+                                    zIndex: 10,
+                                    transition: 'all 0.3s ease'
                                 }}
-                                onMouseLeave={(e) => {
-                                    e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
-                                    e.currentTarget.style.boxShadow = '0 4px 10px rgba(0,0,0,0.05)';
-                                }}
-                            >
-                                <ChevronRight size={24} color="#2c3e50" />
-                            </button>
-                            <style>{`
+                                    onMouseEnter={(e) => {
+                                        e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)';
+                                        e.currentTarget.style.boxShadow = '0 8px 15px rgba(0,0,0,0.1)';
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
+                                        e.currentTarget.style.boxShadow = '0 4px 10px rgba(0,0,0,0.05)';
+                                    }}
+                                >
+                                    <ChevronRight size={24} color="#2c3e50" />
+                                </button>
+                                <style>{`
                                 @media (max-width: 992px) {
                                     .desktop-only-btn {
                                         display: none !important;
                                     }
                                 }
                             `}</style>
-                        </div>
+                            </div>
+                        )}
 
                         {/* CTA Button */}
                         <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -867,10 +864,10 @@ const Home = () => {
                     {/* Social Proof Reels Section */}
                     <SocialProofReels data={homeData?.socialProof} />
                 </div>
-            </section>
+            </section >
 
             {/* CTA Section with Interactive Background */}
-            <section style={{
+            < section style={{
                 position: 'relative',
                 minHeight: '400px',
                 display: 'flex',
@@ -882,7 +879,7 @@ const Home = () => {
                 marginBottom: '2rem'
             }}>
                 {/* Interactive Canvas Background */}
-                <canvas
+                < canvas
                     ref={ctaCanvasRef}
                     style={{
                         position: 'absolute',
@@ -894,7 +891,7 @@ const Home = () => {
                     }}
                 />
 
-                <div className="container" style={{
+                < div className="container" style={{
                     position: 'relative',
                     zIndex: 1,
                     textAlign: 'center'
@@ -946,12 +943,12 @@ const Home = () => {
                             {homeData?.cta?.buttonText || "Зөвлөхтэй уулзах цаг захиалах"}
                         </Link>
                     </div>
-                </div>
-            </section>
+                </div >
+            </section >
 
             {/* FAQ Section */}
-            <FaqSection />
-        </div>
+            < FaqSection />
+        </div >
     );
 };
 
