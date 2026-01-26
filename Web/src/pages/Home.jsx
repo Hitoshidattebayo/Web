@@ -653,15 +653,9 @@ const Home = () => {
                                         return (
                                             <a
                                                 key={item._id || item.id}
-                                                href={isDefaultBlogUrl ? '#' : `${blogUrl}/${item.slug?.current || ''}`}
+                                                href={isDefaultBlogUrl ? '#' : `${blogUrl}/blog/${item.slug?.current || ''}`}
                                                 target={isDefaultBlogUrl ? '_self' : '_blank'}
                                                 rel="noopener noreferrer"
-                                                onClick={(e) => {
-                                                    if (isDefaultBlogUrl) {
-                                                        e.preventDefault();
-                                                        alert('Blog URL is not configured yet. Please check Vercel Environment Variables.');
-                                                    }
-                                                }}
                                                 className="mobile-scroll-item"
                                                 style={{
                                                     aspectRatio: '1/1',
