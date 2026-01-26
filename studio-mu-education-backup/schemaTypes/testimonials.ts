@@ -1,33 +1,30 @@
 import { defineField, defineType } from 'sanity'
 
 export default defineType({
-    name: 'socialProof',
-    title: 'Social Proof Section',
+    name: 'testimonials',
+    title: 'Testimonials Section',
     type: 'document',
     fields: [
         defineField({ name: 'title', title: 'Section Title', type: 'string' }),
         defineField({
             name: 'list',
-            title: 'Reels List',
+            title: 'Testimonials List',
             type: 'array',
             of: [
                 {
                     type: 'object',
                     fields: [
-                        { name: 'video', type: 'file', title: 'Video File', options: { accept: 'video/*' } }
-                    ],
-                    preview: {
-                        select: {
-                            title: 'video.asset.originalFilename'
-                        }
-                    }
+                        { name: 'name', type: 'string', title: 'Author Name' },
+                        { name: 'quote', type: 'text', title: 'Quote' },
+                        { name: 'color', type: 'string', title: 'Color Hex' }
+                    ]
                 }
             ]
         })
     ],
     preview: {
         prepare() {
-            return { title: 'Social Proof Section Content' }
+            return { title: 'Testimonials Section Content' }
         }
     }
 })

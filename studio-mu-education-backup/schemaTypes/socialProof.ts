@@ -14,13 +14,11 @@ export default defineType({
                 {
                     type: 'object',
                     fields: [
+                        { name: 'title', type: 'string', title: 'Video Title' },
+                        { name: 'author', type: 'string', title: 'Author' },
+                        { name: 'views', type: 'string', title: 'Views Count' },
                         { name: 'video', type: 'file', title: 'Video File', options: { accept: 'video/*' } }
-                    ],
-                    preview: {
-                        select: {
-                            title: 'video.asset.originalFilename'
-                        }
-                    }
+                    ]
                 }
             ]
         })

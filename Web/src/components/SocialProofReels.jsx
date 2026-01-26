@@ -3,10 +3,10 @@ import { Play, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const SocialProofReels = ({ data }) => {
     const reels = data?.list || [
-        { _key: 1, title: 'Америкт сурах миний түүх', author: 'Б. Болд', views: '12.5K' },
-        { _key: 2, title: 'IELTS-д 8.0 авсан арга барил', author: 'Г. Сарнай', views: '8.2K' },
-        { _key: 3, title: 'Япон улсын тэтгэлэгт хөтөлбөр', author: 'Э. Тэмүүлэн', views: '15K' },
-        { _key: 4, title: 'Визний ярилцлагад бэлдэх нь', author: 'М. Хулан', views: '10K' },
+        { _key: 1 },
+        { _key: 2 },
+        { _key: 3 },
+        { _key: 4 },
     ];
 
     return (
@@ -110,24 +110,7 @@ const SocialProofReels = ({ data }) => {
                                 )}
                             </div>
 
-                            {/* Overlay Info */}
-                            <div style={{
-                                position: 'absolute',
-                                bottom: 0,
-                                left: 0,
-                                width: '100%',
-                                padding: '1.5rem',
-                                background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)',
-                                color: 'white'
-                            }}>
-                                <h3 style={{ fontSize: '1.1rem', fontWeight: '700', marginBottom: '0.5rem', lineHeight: '1.3' }}>
-                                    {reel.title}
-                                </h3>
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.85rem', opacity: 0.9 }}>
-                                    <span>@{reel.author}</span>
-                                    <span>{reel.views} үзсэн</span>
-                                </div>
-                            </div>
+                            {/* Overlay Info Removed */}
                         </div>
                     ))}
                 </div>
