@@ -7,6 +7,7 @@ import about from './about'
 import cta from './cta'
 import testimonials from './testimonials'
 import socialProof from './socialProof'
+import calendar from './calendar'
 
 export const schemaTypes = [
     post,
@@ -17,5 +18,6 @@ export const schemaTypes = [
     about,
     cta,
     testimonials,
-    socialProof
+    socialProof,
+    calendar
 ]

@@ -1,11 +1,27 @@
 import React, { useState, useEffect, useRef } from 'react';
 import CalendarSelector from '../components/CalendarSelector';
 import { Calendar } from 'lucide-react';
+import { client } from '../sanity/client';
 
 const Apply = () => {
     const canvasRef = useRef(null);
     const [step, setStep] = useState(1); // 1: Calendar, 2: Form
     const [reservationDate, setReservationDate] = useState(null);
+    const [availableDates, setAvailableDates] = useState([]); // Fetched from Sanity
+
+    useEffect(() => {
+        const fetchDates = async () => {
+            try {
+                const query = `*[_type == "appointmentCalendar"][0].availableDates`;
+                const dates = await client.fetch(query);
+                setAvailableDates(dates || []);
+            } catch (error) {
+                console.error("Failed to fetch available dates:", error);
+            }
+        };
+        fetchDates();
+    }, []);
+
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -212,12 +228,14 @@ const Apply = () => {
 
                 {step === 1 && (
                     <div style={{ animation: 'fadeIn 0.5s ease' }}>
-                        <CalendarSelector onSelectDate={(date) => {
-                            setReservationDate(date);
-                            setFormData(prev => ({ ...prev, reservationDate: date.toDateString() }));
-                            setStep(2);
-                            window.scrollTo({ top: 0, behavior: 'smooth' });
-                        }} />
+                        <CalendarSelector
+                            availableDates={availableDates}
+                            onSelectDate={(date) => {
+                                setReservationDate(date);
+                                setFormData(prev => ({ ...prev, reservationDate: date.toDateString() }));
+                                setStep(2);
+                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                            }} />
                     </div>
                 )}
 

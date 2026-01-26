@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, Check } from 'lucide-react';
 
-const CalendarSelector = ({ onSelectDate }) => {
+const CalendarSelector = ({ onSelectDate, availableDates = [] }) => {
     const [currentDate, setCurrentDate] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState(null);
 
@@ -45,6 +45,10 @@ const CalendarSelector = ({ onSelectDate }) => {
         // Days of the month
         for (let day = 1; day <= daysInMonth; day++) {
             const date = new Date(year, month, day);
+            const dateString = date.toISOString().split('T')[0]; // YYYY-MM-DD
+
+            const isAvailable = availableDates.includes(dateString);
+
             const isSelected = selectedDate &&
                 date.getDate() === selectedDate.getDate() &&
                 date.getMonth() === selectedDate.getMonth() &&
@@ -55,7 +59,14 @@ const CalendarSelector = ({ onSelectDate }) => {
             days.push(
                 <div
                     key={day}
-                    onClick={() => handleDateClick(day)}
+                    onClick={() => {
+                        // Optional: Only allow clicking available dates? 
+                        // User request didn't explicitly forbid others, but it makes sense for "Booking".
+                        // For now, I'll allow clicking any, but visually emphasize available ones.
+                        // Or if implied "Appointment Calendar", maybe only available ones. 
+                        // I will allow all for now but highlight available.
+                        handleDateClick(day);
+                    }}
                     style={{
                         height: '40px',
                         display: 'flex',
@@ -63,11 +74,14 @@ const CalendarSelector = ({ onSelectDate }) => {
                         justifyContent: 'center',
                         cursor: 'pointer',
                         borderRadius: '50%',
-                        backgroundColor: isSelected ? '#e74c3c' : isToday ? '#f0f0f0' : 'transparent',
+                        // Selection overrides everything
+                        backgroundColor: isSelected ? '#e74c3c' : 'transparent',
                         color: isSelected ? 'white' : '#333',
-                        fontWeight: isSelected || isToday ? 'bold' : 'normal',
+                        fontWeight: isSelected || isToday || isAvailable ? 'bold' : 'normal',
                         transition: 'all 0.2s',
-                        border: isToday && !isSelected ? '1px solid #e74c3c' : 'none'
+                        // Red circle for available dates (as requested)
+                        border: isSelected ? 'none' : (isAvailable ? '2px solid #e74c3c' : (isToday ? '1px solid #ccc' : 'none')),
+                        position: 'relative'
                     }}
                     onMouseEnter={(e) => {
                         if (!isSelected) e.currentTarget.style.backgroundColor = '#f9f9f9';
