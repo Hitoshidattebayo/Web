@@ -47,6 +47,9 @@ export default defineConfig({
                     S.listItem()
                       .title('Social Proof Section')
                       .child(S.document().schemaType('socialProof').documentId('socialProof')),
+                    S.listItem()
+                      .title('FAQ Section')
+                      .child(S.document().schemaType('faq').documentId('faq')),
                   ])
               ),
             S.listItem()
@@ -54,7 +57,7 @@ export default defineConfig({
               .child(S.document().schemaType('appointmentCalendar').documentId('appointmentCalendar')),
             // Default list items except the ones we mapped
             ...S.documentTypeListItems().filter(
-              (listItem: any) => !['hero', 'whoWeHelp', 'process', 'services', 'about', 'cta', 'testimonials', 'socialProof', 'home', 'appointmentCalendar'].includes(listItem.getId())
+              (listItem: any) => !['hero', 'whoWeHelp', 'process', 'services', 'about', 'cta', 'testimonials', 'socialProof', 'home', 'appointmentCalendar', 'faq'].includes(listItem.getId())
             ),
           ]),
     }),
