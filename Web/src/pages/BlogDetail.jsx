@@ -135,7 +135,14 @@ const BlogDetail = () => {
     };
 
     return (
-        <div style={{ paddingTop: '120px', paddingBottom: '4rem', backgroundColor: '#fff' }}>
+        <div style={{
+            paddingTop: '150px', // Match Apply.jsx padding to clear navbar
+            paddingBottom: '4rem',
+            backgroundColor: '#fff',
+            minHeight: '100vh',
+            position: 'relative',
+            zIndex: 1
+        }}>
             <div className="container" style={{ maxWidth: '800px' }}>
                 <Link to="/" style={{
                     display: 'inline-flex',
