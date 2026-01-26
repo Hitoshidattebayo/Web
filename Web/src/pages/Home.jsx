@@ -646,65 +646,80 @@ const Home = () => {
                                     { id: 2, title: 'BLOG NAME', img: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?auto=format&fit=crop&w=600&q=80' },
                                     { id: 3, title: 'BLOG NAME', img: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=600&q=80' },
                                     { id: 4, title: 'BLOG NAME', img: 'https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=600&q=80' }
-                                ]).map((item) => (
-                                    <a
-                                        key={item._id || item.id}
-                                        href={`${import.meta.env.VITE_BLOG_URL || 'http://localhost:3000'}/${item.slug?.current || ''}`}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="mobile-scroll-item"
-                                        style={{
-                                            aspectRatio: '1/1',
-                                            borderRadius: '20px',
-                                            position: 'relative',
-                                            overflow: 'hidden',
-                                            cursor: 'pointer',
-                                            boxShadow: '0 10px 20px rgba(0,0,0,0.1)',
-                                            textDecoration: 'none',
-                                            display: 'block'
-                                        }}
-                                    >
-                                        <div style={{
-                                            width: '100%',
-                                            height: '100%',
-                                            backgroundImage: `url(${item.img || 'https://via.placeholder.com/300'})`,
-                                            backgroundSize: 'cover',
-                                            backgroundPosition: 'center',
-                                            transition: 'transform 0.5s ease',
-                                            position: 'absolute',
-                                            top: 0,
-                                            left: 0
-                                        }}
-                                            onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
-                                            onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                                        />
-                                        {/* Gradient Overlay */}
-                                        <div style={{
-                                            position: 'absolute',
-                                            top: 0,
-                                            left: 0,
-                                            width: '100%',
-                                            height: '100%',
-                                            background: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(231, 76, 60, 0.9) 100%)',
-                                            pointerEvents: 'none'
-                                        }} />
+                                ]).map((item) => {
+                                    const blogUrl = import.meta.env.VITE_BLOG_URL;
+                                    const isDefaultBlogUrl = !blogUrl || blogUrl.includes('your-nextjs-blog');
 
-                                        <div style={{
-                                            position: 'absolute',
-                                            bottom: '1.5rem',
-                                            left: '1.5rem',
-                                            color: 'white',
-                                            fontWeight: '500', // Thinner font weight
-                                            fontSize: '1.1rem',
-                                            textTransform: 'uppercase',
-                                            letterSpacing: '0.5px',
-                                            pointerEvents: 'none',
-                                            zIndex: 2
-                                        }}>
-                                            {item.title}
-                                        </div>
-                                    </a>
-                                ))}
+                                    if (isDefaultBlogUrl) {
+                                        console.warn('VITE_BLOG_URL is not set or is using the placeholder. Blog links will not work correctly.');
+                                    }
+
+                                    return (
+                                        <a
+                                            key={item._id || item.id}
+                                            href={isDefaultBlogUrl ? '#' : `${blogUrl}/${item.slug?.current || ''}`}
+                                            target={isDefaultBlogUrl ? '_self' : '_blank'}
+                                            rel="noopener noreferrer"
+                                            onClick={(e) => {
+                                                if (isDefaultBlogUrl) {
+                                                    e.preventDefault();
+                                                    alert('Blog URL is not configured yet. Please check Vercel Environment Variables.');
+                                                }
+                                            }}
+                                            className="mobile-scroll-item"
+                                            style={{
+                                                aspectRatio: '1/1',
+                                                borderRadius: '20px',
+                                                position: 'relative',
+                                                overflow: 'hidden',
+                                                cursor: 'pointer',
+                                                boxShadow: '0 10px 20px rgba(0,0,0,0.1)',
+                                                textDecoration: 'none',
+                                                display: 'block'
+                                            }}
+                                        >
+                                            <div style={{
+                                                width: '100%',
+                                                height: '100%',
+                                                backgroundImage: `url(${item.img || 'https://via.placeholder.com/300'})`,
+                                                backgroundSize: 'cover',
+                                                backgroundPosition: 'center',
+                                                transition: 'transform 0.5s ease',
+                                                position: 'absolute',
+                                                top: 0,
+                                                left: 0
+                                            }}
+                                                onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+                                                onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                                            />
+                                            {/* Gradient Overlay */}
+                                            <div style={{
+                                                position: 'absolute',
+                                                top: 0,
+                                                left: 0,
+                                                width: '100%',
+                                                height: '100%',
+                                                background: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(231, 76, 60, 0.9) 100%)',
+                                                pointerEvents: 'none'
+                                            }} />
+
+                                            <div style={{
+                                                position: 'absolute',
+                                                bottom: '1.5rem',
+                                                left: '1.5rem',
+                                                color: 'white',
+                                                fontWeight: '500', // Thinner font weight
+                                                fontSize: '1.1rem',
+                                                textTransform: 'uppercase',
+                                                letterSpacing: '0.5px',
+                                                pointerEvents: 'none',
+                                                zIndex: 2
+                                            }}>
+                                                {item.title}
+                                            </div>
+                                        </a>
+                                    );
+                                })}
                             </div>
                             <style>{`
                                 @media (max-width: 992px) {
