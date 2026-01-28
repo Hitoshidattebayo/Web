@@ -10,6 +10,8 @@ import socialProof from './socialProof'
 import calendar from './calendar'
 import faq from './faq'
 
+import { calculatorConfig } from './calculatorConfig'
+
 export const schemaTypes = [
     post,
     hero,
@@ -21,5 +23,6 @@ export const schemaTypes = [
     testimonials,
     socialProof,
     calendar,
-    faq
+    faq,
+    calculatorConfig
 ]

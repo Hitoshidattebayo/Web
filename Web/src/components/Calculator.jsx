@@ -3,24 +3,75 @@ import { addWeeks } from 'date-fns';
 import './Calculator.css';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import { createClient } from '@sanity/client';
+
+const sanityClient = createClient({
+    projectId: import.meta.env.VITE_SANITY_PROJECT_ID,
+    dataset: import.meta.env.VITE_SANITY_DATASET,
+    apiVersion: '2023-05-03',
+    useCdn: true,
+});
 
 const Calculator = () => {
-    // Pricing Constants
-    const COURSE_PRICES = {
-        'Regular ESL': { 1: 360, 2: 540, 3: 720, 4: 900, 5: 1125, 6: 1350, 7: 1575, 8: 1800, 12: 2700, 16: 3600, 20: 4500, 24: 5400 },
-        'Power Intensive ESL': { 1: 440, 2: 660, 3: 880, 4: 1100, 5: 1375, 6: 1650, 7: 1925, 8: 2200, 12: 3300, 16: 4400, 20: 5500, 24: 6600 },
-        'IELTS': { 1: 420, 2: 630, 3: 840, 4: 1050, 5: 1313, 6: 1575, 7: 1838, 8: 2100, 12: 3150, 16: 4200, 20: 5250, 24: 6300 },
-        'TOEIC': { 1: 400, 2: 600, 3: 800, 4: 1000, 5: 1250, 6: 1500, 7: 1750, 8: 2000, 12: 3000, 16: 4000, 20: 5000, 24: 6000 },
-        'BUSINESS': { 1: 420, 2: 630, 3: 840, 4: 1050, 5: 1313, 6: 1575, 7: 1838, 8: 2100, 12: 3150, 16: 4200, 20: 5250, 24: 6300 }
-    };
-
-    const DORM_PRICES = {
-        'Twin': { 1: 440, 2: 660, 3: 880, 4: 1100, 5: 1375, 6: 1650, 7: 1925, 8: 2200 },
-        'Standard Single': { 1: 700, 2: 900, 3: 1200, 4: 1500, 5: 1874, 6: 2250, 7: 2625, 8: 3000 },
-        'Premium Single': { 1: 680, 2: 1020, 3: 1360, 4: 1700, 5: 2125, 6: 2550, 7: 2975, 8: 3400 }
-    };
+    // State for pricing data from Sanity
+    const [coursePrices, setCoursePrices] = useState({});
+    const [dormPrices, setDormPrices] = useState({});
+    const [dormLabels, setDormLabels] = useState({});
+    const [isLoading, setIsLoading] = useState(true);
 
     const periodOptions = Array.from({ length: 8 }, (_, i) => i + 1);
+
+    // Fetch pricing data from Sanity
+    useEffect(() => {
+        const fetchPricingData = async () => {
+            try {
+                const data = await sanityClient.fetch(`*[_type == "calculatorConfig"][0]{
+                    courses[]{
+                        name,
+                        priceList[]{weeks, price}
+                    },
+                    dormitories[]{
+                        name,
+                        label,
+                        priceList[]{weeks, price}
+                    }
+                }`);
+
+                if (data) {
+                    // Transform courses data
+                    const courseData = {};
+                    data.courses?.forEach(course => {
+                        const prices = {};
+                        course.priceList?.forEach(item => {
+                            prices[item.weeks] = item.price;
+                        });
+                        courseData[course.name] = prices;
+                    });
+                    setCoursePrices(courseData);
+
+                    // Transform dormitory data
+                    const dormData = {};
+                    const dormLabelData = {};
+                    data.dormitories?.forEach(dorm => {
+                        const prices = {};
+                        dorm.priceList?.forEach(item => {
+                            prices[item.weeks] = item.price;
+                        });
+                        dormData[dorm.name] = prices;
+                        dormLabelData[dorm.name] = dorm.label;
+                    });
+                    setDormPrices(dormData);
+                    setDormLabels(dormLabelData);
+                }
+            } catch (error) {
+                console.error('Error fetching pricing data:', error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchPricingData();
+    }, []);
 
     // Initial item state
     const createNewCourse = () => ({
@@ -55,13 +106,13 @@ const Calculator = () => {
     const calculateCoursePrice = (curriculum, period) => {
         if (!curriculum || !period) return 0;
         const weeks = parseInt(period);
-        return COURSE_PRICES[curriculum]?.[weeks] || 0;
+        return coursePrices[curriculum]?.[weeks] || 0;
     };
 
     const calculateDormPrice = (roomType, period) => {
         if (!roomType || !period) return 0;
         const weeks = parseInt(period);
-        return DORM_PRICES[roomType]?.[weeks] || 0;
+        return dormPrices[roomType]?.[weeks] || 0;
     };
 
     // Handlers
@@ -129,6 +180,17 @@ const Calculator = () => {
 
     const grandTotal = [...courses, ...dorms].reduce((sum, item) => sum + item.price, 0);
 
+    // Show loading state
+    if (isLoading) {
+        return (
+            <section className="calculator-section">
+                <div className="calculator-container" style={{ textAlign: 'center', padding: '3rem' }}>
+                    <p>Loading calculator...</p>
+                </div>
+            </section>
+        );
+    }
+
     return (
         <section className="calculator-section">
             <div className="calculator-container">
@@ -145,11 +207,9 @@ const Calculator = () => {
                                         className="form-select"
                                     >
                                         <option value="">Хөтөлбөр</option>
-                                        <option value="Regular ESL">Regular ESL</option>
-                                        <option value="Power Intensive ESL">Power Intensive ESL</option>
-                                        <option value="IELTS">IELTS</option>
-                                        <option value="TOEIC">TOEIC</option>
-                                        <option value="BUSINESS">BUSINESS</option>
+                                        {Object.keys(coursePrices).map(courseName => (
+                                            <option key={courseName} value={courseName}>{courseName}</option>
+                                        ))}
                                     </select>
                                 </div>
                                 <div className="form-group">
@@ -208,9 +268,11 @@ const Calculator = () => {
                                         className="form-select"
                                     >
                                         <option value="">Өрөөний төрөл</option>
-                                        <option value="Standard Single">Standard 1</option>
-                                        <option value="Premium Single">Premium 1</option>
-                                        <option value="Twin">2 хүний өрөө</option>
+                                        {Object.keys(dormPrices).map(dormName => (
+                                            <option key={dormName} value={dormName}>
+                                                {dormLabels[dormName] || dormName}
+                                            </option>
+                                        ))}
                                     </select>
                                 </div>
                                 <div className="form-group">
