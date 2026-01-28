@@ -4,6 +4,7 @@ import DormitoryFeatures from '../components/DormitoryFeatures';
 import History from '../components/History';
 import Curriculum from '../components/Curriculum';
 import StudentImprovement from '../components/StudentImprovement';
+import Calculator from '../components/Calculator';
 import ciaGallery1 from '../assets/cia-gallery-1.png';
 import ciaIntro from '../assets/cia-intro.jpg';
 import campus2 from '../assets/campus-2.jpg';
@@ -451,6 +452,9 @@ const CIA = () => {
                     </div>
                 </div>
             </section>
+
+            {/* Calculator Section */}
+            <Calculator />
 
             {/* CTA Section with Interactive Background */}
             <section style={{
