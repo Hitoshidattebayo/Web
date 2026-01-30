@@ -6,6 +6,7 @@ import CIA from './pages/CIA';
 import Yeungnam from './pages/Yeungnam';
 import Apply from './pages/Apply';
 import BlogDetail from './pages/BlogDetail';
+import EnglishTest from './pages/EnglishTest';
 import './index.css';
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
             <Route path="/yeungnam" element={<Yeungnam />} />
             <Route path="/apply" element={<Apply />} />
             <Route path="/blog/:slug" element={<BlogDetail />} />
+            <Route path="/english-test" element={<EnglishTest />} />
           </Routes>
         </main>
         <Footer />

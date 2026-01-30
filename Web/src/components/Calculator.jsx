@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { addWeeks } from 'date-fns';
 import './Calculator.css';
-import DatePicker from 'react-datepicker';
-import "react-datepicker/dist/react-datepicker.css";
 import { createClient } from '@sanity/client';
 
 const sanityClient = createClient({
@@ -225,21 +223,21 @@ const Calculator = () => {
                                     </select>
                                 </div>
                                 <div className="form-group">
-                                    <DatePicker
-                                        selected={item.startDate}
-                                        onChange={(date) => updateCourse(item.id, 'startDate', date)}
-                                        filterDate={(date) => date.getDay() === 0}
-                                        placeholderText="Эхлэх өдөр"
+                                    <input
+                                        type="date"
+                                        value={item.startDate ? item.startDate.toISOString().split('T')[0] : ''}
+                                        onChange={(e) => updateCourse(item.id, 'startDate', e.target.valueAsDate)}
+                                        placeholder="Эхлэх өдөр"
                                         className="form-select"
-                                        dateFormat="MM/dd/yyyy"
                                     />
+                                    {/* Note: Native date input doesn't support 'filterDate' for Sundays only directly */}
                                 </div>
                                 <div className="form-group">
-                                    <DatePicker
-                                        selected={item.endDate}
-                                        placeholderText="Дуусах өдөр"
+                                    <input
+                                        type="date"
+                                        value={item.endDate ? item.endDate.toISOString().split('T')[0] : ''}
+                                        placeholder="Дуусах өдөр"
                                         className="form-select"
-                                        dateFormat="MM/dd/yyyy"
                                         disabled
                                     />
                                 </div>
@@ -288,21 +286,20 @@ const Calculator = () => {
                                     </select>
                                 </div>
                                 <div className="form-group">
-                                    <DatePicker
-                                        selected={item.startDate}
-                                        onChange={(date) => updateDorm(item.id, 'startDate', date)}
-                                        filterDate={(date) => date.getDay() === 0}
-                                        placeholderText="Эхлэх өдөр"
+                                    <input
+                                        type="date"
+                                        value={item.startDate ? item.startDate.toISOString().split('T')[0] : ''}
+                                        onChange={(e) => updateDorm(item.id, 'startDate', e.target.valueAsDate)}
+                                        placeholder="Эхлэх өдөр"
                                         className="form-select"
-                                        dateFormat="MM/dd/yyyy"
                                     />
                                 </div>
                                 <div className="form-group">
-                                    <DatePicker
-                                        selected={item.endDate}
-                                        placeholderText="Дуусах өдөр"
+                                    <input
+                                        type="date"
+                                        value={item.endDate ? item.endDate.toISOString().split('T')[0] : ''}
+                                        placeholder="Дуусах өдөр"
                                         className="form-select"
-                                        dateFormat="MM/dd/yyyy"
                                         disabled
                                     />
                                 </div>

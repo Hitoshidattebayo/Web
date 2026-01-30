@@ -373,6 +373,48 @@ const CIA = () => {
             {/* Curriculum Section */}
             <Curriculum />
 
+            {/* English Level Test CTA */}
+            <section className="section" style={{ backgroundColor: '#f8fafc', textAlign: 'center', paddingTop: '0' }}>
+                <div className="container">
+                    <div style={{
+                        maxWidth: '800px',
+                        margin: '0 auto',
+                        background: 'white',
+                        padding: '40px',
+                        borderRadius: '24px',
+                        boxShadow: '0 4px 6px rgba(0,0,0,0.05)'
+                    }}>
+                        <h3 style={{
+                            fontSize: '1.8rem',
+                            color: '#1e293b',
+                            marginBottom: '16px',
+                            fontWeight: '700'
+                        }}>
+                            Та англи хэлний түвшингээ мэдэх үү?
+                        </h3>
+                        <p style={{
+                            color: '#64748b',
+                            marginBottom: '24px',
+                            fontSize: '1.1rem'
+                        }}>
+                            Та одоогийн түвшингээ тодорхойлж, өөрт тохирсон хөтөлбөрөө сонгоорой.
+                        </p>
+                        <a href="/english-test" className="btn btn-primary" style={{
+                            background: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)',
+                            border: 'none',
+                            padding: '12px 32px',
+                            borderRadius: '50px',
+                            fontSize: '1.1rem',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '8px'
+                        }}>
+                            Түвшин тогтоох <Languages size={18} />
+                        </a>
+                    </div>
+                </div>
+            </section>
+
             {/* Student Improvement Section */}
             <StudentImprovement />
 
