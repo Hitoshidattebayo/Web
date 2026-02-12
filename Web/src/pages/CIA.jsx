@@ -15,6 +15,7 @@ import life5 from '../assets/life-5.jpg';
 import { Dumbbell, Languages, Building2, Play, Calendar } from 'lucide-react';
 import { client, urlFor } from '../sanity/client';
 import useParticleAnimation from '../hooks/useParticleAnimation';
+import Loading from '../components/Loading';
 
 // CIA Intro Video Component (9:16 Mock)
 const CIAIntroVideo = ({ videoUrl, videoFileUrl }) => {
@@ -429,15 +430,18 @@ const CampusLifeGallery = ({ galleryData }) => {
     );
 };
 
-import Loading from '../components/Loading';
+
+
+// Particle Canvas Component to handle hook lifecycle correctly
+const ParticleCanvas = ({ style }) => {
+    const canvasRef = useRef(null);
+    useParticleAnimation(canvasRef);
+    return <canvas ref={canvasRef} style={style} />;
+};
 
 const CIA = () => {
-    const canvasRef = useRef(null);
-    const ctaCanvasRef = useRef(null);
-
-    // Use shared particle animation hook
-    useParticleAnimation(canvasRef);
-    useParticleAnimation(ctaCanvasRef);
+    // Canvas refs removed (handled by ParticleCanvas)
+    // Particle hooks removed (handled by ParticleCanvas)
 
     const [cmsData, setCmsData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -554,16 +558,14 @@ const CIA = () => {
                 ) : null}
 
                 {/* Interactive Canvas Background (Overlay) */}
-                <canvas
-                    ref={canvasRef}
+                <ParticleCanvas
                     style={{
                         position: 'absolute',
                         top: 0,
                         left: 0,
                         width: '100%',
                         height: '100%',
-                        zIndex: 1,
-                        pointerEvents: 'none'
+                        zIndex: 1
                     }}
                 />
 
@@ -820,8 +822,7 @@ const CIA = () => {
                 padding: 'var(--spacing-2xl) 0'
             }}>
                 {/* Interactive Canvas Background */}
-                <canvas
-                    ref={ctaCanvasRef}
+                <ParticleCanvas
                     style={{
                         position: 'absolute',
                         top: 0,
