@@ -125,7 +125,7 @@ const CampusLifeGallery = ({ galleryData }) => {
                             if (img.asset) {
                                 processedImages.push({
                                     category: cat.categoryName,
-                                    url: urlFor(img).url()
+                                    url: urlFor(img).width(800).auto('format').quality(75).url() // Optimized image
                                 });
                             }
                         });
@@ -139,7 +139,7 @@ const CampusLifeGallery = ({ galleryData }) => {
             availableCategories = ['All', ...new Set(galleryData.map(item => item.category).filter(Boolean))];
             processedImages = galleryData.map(item => ({
                 category: item.category,
-                url: item.asset ? urlFor(item.asset).url() : null // Attempt to resolve URL for old structure
+                url: item.asset ? urlFor(item.asset).width(800).auto('format').quality(75).url() : null // Optimized fallback
             })).filter(item => item.url);
         }
     }
@@ -552,7 +552,7 @@ const CIA = () => {
                     </video>
                 ) : cmsData?.hero?.backgroundImage ? (
                     <img
-                        src={urlFor(cmsData.hero.backgroundImage).url()}
+                        src={urlFor(cmsData.hero.backgroundImage).width(1920).auto('format').quality(80).url()}
                         alt="Hero Background"
                         style={{
                             position: 'absolute',

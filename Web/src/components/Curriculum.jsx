@@ -274,7 +274,7 @@ const Curriculum = ({ data }) => {
                                     }}
                                 >
                                     <img
-                                        src={typeof img === 'string' ? img : urlFor(img).url()}
+                                        src={typeof img === 'string' ? img : urlFor(img).width(300).auto('format').url()}
                                         alt={`Training system`}
                                         style={{
                                             maxWidth: '100%',

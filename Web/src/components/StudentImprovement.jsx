@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { urlFor } from '../sanity/client';
 import improvement1 from '../assets/improvement-1.png';
 import improvement2 from '../assets/improvement-2.png';
 import improvement3 from '../assets/improvement-3.jpg';
@@ -10,7 +11,7 @@ const StudentImprovement = ({ data }) => {
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const scrollRef = useRef(null);
 
-    const images = [
+    const images = data?.galleryImages || [
         improvement1,
         improvement2,
         improvement3,
@@ -124,7 +125,7 @@ const StudentImprovement = ({ data }) => {
                             position: 'relative'
                         }}>
                             <img
-                                src={images[currentImageIndex]}
+                                src={data?.galleryImages ? urlFor(images[currentImageIndex]).width(800).auto('format').quality(75).url() : images[currentImageIndex]}
                                 alt={`Student improvement ${currentImageIndex + 1}`}
                                 style={{
                                     width: '100%',
@@ -299,7 +300,7 @@ const StudentImprovement = ({ data }) => {
                             }}
                         >
                             <img
-                                src={images[currentImageIndex]}
+                                src={data?.galleryImages ? urlFor(images[currentImageIndex]).width(800).auto('format').quality(75).url() : images[currentImageIndex]}
                                 alt={`Student improvement ${currentImageIndex + 1}`}
                                 style={{
                                     maxWidth: '100%',
