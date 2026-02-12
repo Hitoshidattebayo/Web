@@ -437,7 +437,6 @@ const CIA = () => {
 
     // Use shared particle animation hook
     useParticleAnimation(canvasRef);
-    useParticleAnimation(canvasRef);
     useParticleAnimation(ctaCanvasRef);
 
     const [cmsData, setCmsData] = useState(null);
@@ -552,24 +551,25 @@ const CIA = () => {
                             zIndex: 0
                         }}
                     />
-                ) : (
-                    /* Interactive Canvas Background (Fallback) */
-                    <canvas
-                        ref={canvasRef}
-                        style={{
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                            width: '100%',
-                            height: '100%',
-                            zIndex: 0
-                        }}
-                    />
-                )}
+                ) : null}
+
+                {/* Interactive Canvas Background (Overlay) */}
+                <canvas
+                    ref={canvasRef}
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        zIndex: 1,
+                        pointerEvents: 'none'
+                    }}
+                />
 
                 <div style={{
                     position: 'relative',
-                    zIndex: 1,
+                    zIndex: 2,
                     textAlign: 'center',
                     maxWidth: '1000px',
                     padding: '2rem'
