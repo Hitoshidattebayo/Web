@@ -465,7 +465,16 @@ const CIA = () => {
                             images[]
                         }
                     },
-                    "dormitory": *[_type == "ciaDormitory"][0],
+                    "dormitory": *[_type == "ciaDormitory"][0] {
+                        ...,
+                        roomTypes[] {
+                            ...,
+                            images[] {
+                                ...,
+                                asset->
+                            }
+                        }
+                    },
                     "curriculum": *[_type == "ciaCurriculum"][0],
                     "faq": *[_type == "ciaFaq"][0],
                     "studentImprovement": *[_type == "ciaStudentImprovement"][0]

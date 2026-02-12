@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { urlFor } from '../sanity/client';
 import dorm1 from '../assets/dorm-1.jpg';
 import dorm2 from '../assets/dorm-2.jpg';
 import dorm3 from '../assets/dorm-3.jpg';
@@ -11,15 +12,53 @@ const DormitoryFeatures = ({ data }) => {
     const [activeRoomType, setActiveRoomType] = useState('1 хүний өрөө');
     const scrollRef = useRef(null);
 
-    // Placeholder image mappings for room types
-    const roomImages = {
+    // Helper for room icons
+    const getRoomIcon = (count) => {
+        const icons = [];
+        for (let i = 0; i < count; i++) icons.push(<Bed size={20} key={i} />);
+        return <div style={{ display: 'flex' }}>{icons}</div>;
+    };
+
+    // Default Room Types
+    const defaultRoomTypes = [
+        { type: '1 хүний өрөө', icon: <Bed size={20} /> },
+        { type: '2 хүний өрөө', icon: <div style={{ display: 'flex' }}><Bed size={20} /><Bed size={20} /></div> },
+        { type: '3 хүний өрөө', icon: <div style={{ display: 'flex' }}><Bed size={20} /><Bed size={20} /><Bed size={20} /></div> },
+        { type: '4 хүний өрөө', icon: <div style={{ display: 'flex' }}><Bed size={20} /><Bed size={20} /><Bed size={20} /><Bed size={20} /></div> }
+    ];
+
+    // Process Room Types from Data
+    const roomTypes = data?.roomTypes ? data.roomTypes.map(r => {
+        const count = r.name.includes('1') ? 1 : r.name.includes('2') ? 2 : r.name.includes('3') ? 3 : r.name.includes('4') ? 4 : 1;
+
+        // Process images
+        const processedImages = r.images && r.images.length > 0
+            ? r.images.map(img => img.asset ? urlFor(img).url() : null).filter(Boolean)
+            : [];
+
+        return {
+            type: r.name,
+            icon: count === 1 ? <Bed size={20} /> : getRoomIcon(count),
+            images: processedImages
+        };
+    }) : defaultRoomTypes;
+
+    // Placeholder mappings
+    const roomImagesStub = {
         '1 хүний өрөө': [dorm1, dorm2],
         '2 хүний өрөө': [dorm3, dorm4],
         '3 хүний өрөө': [dorm1, dorm3, dorm4],
         '4 хүний өрөө': [dorm2, dorm4, dorm1],
     };
 
-    const currentDormImages = roomImages[activeRoomType] || [dorm1, dorm2, dorm3, dorm4];
+    // Determine current images
+    const activeRoomData = roomTypes.find(r => r.type === activeRoomType);
+    const sanityImages = activeRoomData?.images;
+
+    // Fallback to roomImagesStub if no Sanity images for this room type
+    const currentDormImages = (sanityImages && sanityImages.length > 0)
+        ? sanityImages
+        : (roomImagesStub[activeRoomType] || [dorm1, dorm2, dorm3, dorm4]);
 
     // Reset index when room type changes
     useEffect(() => {
@@ -30,8 +69,7 @@ const DormitoryFeatures = ({ data }) => {
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentImageIndex((prev) => (prev + 1) % currentDormImages.length);
-        }, 4000); // Change image every 4 seconds
-
+        }, 4000);
         return () => clearInterval(interval);
     }, [currentDormImages.length, activeRoomType]);
 
@@ -47,14 +85,6 @@ const DormitoryFeatures = ({ data }) => {
         { icon: <ShowerHead size={24} />, title: 'Халуун усны шүршүүр' },
         { icon: <Snowflake size={24} />, title: 'Хөргөгч' },
         { icon: <Archive size={24} />, title: 'Ариун цэврийн өрөө (WC)' }
-    ];
-
-    // Default Room Types
-    const defaultRoomTypes = [
-        { type: '1 хүний өрөө', icon: <Bed size={20} /> },
-        { type: '2 хүний өрөө', icon: <div style={{ display: 'flex' }}><Bed size={20} /><Bed size={20} /></div> },
-        { type: '3 хүний өрөө', icon: <div style={{ display: 'flex' }}><Bed size={20} /><Bed size={20} /><Bed size={20} /></div> },
-        { type: '4 хүний өрөө', icon: <div style={{ display: 'flex' }}><Bed size={20} /><Bed size={20} /><Bed size={20} /><Bed size={20} /></div> }
     ];
 
     // Map string icons to components
@@ -74,22 +104,6 @@ const DormitoryFeatures = ({ data }) => {
         ...a,
         icon: iconMap[a.icon] || <Bed size={24} />
     })) : defaultAmenities;
-
-    // Helper for room icons
-    const getRoomIcon = (count) => {
-        const icons = [];
-        for (let i = 0; i < count; i++) icons.push(<Bed size={20} key={i} />);
-        return <div style={{ display: 'flex' }}>{icons}</div>;
-    };
-
-    const roomTypes = data?.roomTypes ? data.roomTypes.map(r => {
-        // Infer count from name if possible, or just default to 1
-        const count = r.name.includes('1') ? 1 : r.name.includes('2') ? 2 : r.name.includes('3') ? 3 : r.name.includes('4') ? 4 : 1;
-        return {
-            type: r.name,
-            icon: count === 1 ? <Bed size={20} /> : getRoomIcon(count)
-        };
-    }) : defaultRoomTypes;
 
     // Drag-to-scroll logic for Amenities
     const [isDragging, setIsDragging] = useState(false);
