@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 
-const History = () => {
+const History = ({ data }) => {
     const scrollContainerRef = useRef(null);
 
     const scroll = (direction) => {
@@ -13,7 +13,7 @@ const History = () => {
         }
     };
 
-    const historyData = [
+    const defaultHistoryData = [
         {
             year: '2023',
             events: [
@@ -25,7 +25,7 @@ const History = () => {
             year: '2022',
             events: [
                 'Цар тахлын дараах нээлт (6 сарын 3)',
-                'CIA Монгол сурагчдыг Зуны/Өвлийн кемпдээ хүлээн авч эхлэв',
+                'CIA Монгол сурагчдад Зуны/Өвлийн кемпдээ хүлээн авч эхлэв',
                 'CIA Agency Services (CAS) байгуулагдсан'
             ]
         },
@@ -107,6 +107,8 @@ const History = () => {
             ]
         }
     ];
+
+    const historyData = data || defaultHistoryData;
 
     return (
         <section className="section">

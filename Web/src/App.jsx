@@ -8,6 +8,7 @@ import './index.css';
 // Lazy load pages
 const Home = lazy(() => import('./pages/Home'));
 const CIA = lazy(() => import('./pages/CIA'));
+const CPI = lazy(() => import('./pages/CPI'));
 const Yeungnam = lazy(() => import('./pages/Yeungnam'));
 const Apply = lazy(() => import('./pages/Apply'));
 const BlogDetail = lazy(() => import('./pages/BlogDetail'));
@@ -23,6 +24,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/cia" element={<CIA />} />
+              <Route path="/cpi" element={<CPI />} />
               <Route path="/yeungnam" element={<Yeungnam />} />
               <Route path="/apply" element={<Apply />} />
               <Route path="/blog/:slug" element={<BlogDetail />} />

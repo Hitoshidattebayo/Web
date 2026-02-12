@@ -6,12 +6,14 @@ import campus3 from '../assets/campus-3.jpg';
 import campus4 from '../assets/campus-4.jpg';
 import campus5 from '../assets/campus-5.jpg';
 
-const CampusMap = () => {
+const CampusMap = ({ mapImage, galleryImages: propGalleryImages, blocks }) => {
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const galleryRef = useRef(null);
 
-    const galleryImages = [campus2, campus3, campus4, campus5];
+    const defaultGalleryImages = [campus2, campus3, campus4, campus5];
+    const galleryImages = propGalleryImages || defaultGalleryImages;
+    const activeMapImage = mapImage || campusMapImg;
 
     const openLightbox = (index) => {
         setCurrentImageIndex(index);
@@ -61,7 +63,7 @@ const CampusMap = () => {
                     }}>
                         {/* Campus Map Image */}
                         <img
-                            src={campusMapImg}
+                            src={activeMapImage}
                             alt="CIA Campus Map"
                             style={{
                                 width: '100%',
@@ -168,67 +170,36 @@ const CampusMap = () => {
 
                     {/* Right Side - Scrolling Text Content */}
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-lg)' }}>
-                        {/* Block 1 */}
-                        <div className="card">
-                            <h3 style={{
-                                color: 'var(--color-primary)',
-                                marginBottom: 'var(--spacing-md)',
-                                fontSize: '1.5rem',
-                                fontWeight: '700'
-                            }}>
-                                №1 БЛОК
-                            </h3>
-                            <ul style={{ lineHeight: '2' }}>
-                                <li>· РЕСЕПШИН & ХҮЛЭЭЛГИЙН ӨРӨӨ</li>
-                                <li>· ШАЛГАЛТЫН ӨРӨӨ</li>
-                                <li>· АЯЛЛЫН АГЕНТЛАГ</li>
-                                <li>· СҮПЕР МАРКЕТ</li>
-                            </ul>
-                        </div>
-
-                        {/* Block 2 */}
-                        <div className="card">
-                            <h3 style={{
-                                color: 'var(--color-primary)',
-                                marginBottom: 'var(--spacing-md)',
-                                fontSize: '1.5rem',
-                                fontWeight: '700'
-                            }}>
-                                №2 БЛОК
-                            </h3>
-                            <ul style={{ lineHeight: '2' }}>
-                                <li>· УУЛЗАЛТЫН ӨРӨӨ</li>
-                                <li>· ХУРЛЫН ӨРӨӨ</li>
-                                <li>· ОНЛАЙН ХИЧЭЭЛИЙН ТАНХИМ</li>
-                                <li>· ГРҮПП ХИЧЭЭЛИЙН ТАНХИМ</li>
-                                <li>· АМРАЛТЫН ӨРӨӨ</li>
-                                <li>· ЗООГИЙН ГАЗАР</li>
-                                <li>· ҮЗВЭРИЙН ТАНХИМ</li>
-                                <li>· НОМЫН САН</li>
-                                <li>· ДУУНЫ ӨРӨӨ</li>
-                                <li>· ЭМНЭЛЭГ</li>
-                                <li>· ФИТНЕСС / GYM / ИОГА</li>
-                            </ul>
-                        </div>
-
-                        {/* Block 3 */}
-                        <div className="card">
-                            <h3 style={{
-                                color: 'var(--color-primary)',
-                                marginBottom: 'var(--spacing-md)',
-                                fontSize: '1.5rem',
-                                fontWeight: '700'
-                            }}>
-                                №3 БЛОК
-                            </h3>
-                            <ul style={{ lineHeight: '2' }}>
-                                <li>· БАГШ НАРЫН ӨРӨӨ</li>
-                                <li>· СУРАГЧ НАРЫН ДОТУУР БАЙР</li>
-                                <li>· ЗӨВӨЛГӨӨНИЙ ӨРӨӨ</li>
-                                <li>· ГАДНАХ УСАН САН</li>
-                                <li>· САГСНЫ ТАЛБАЙ</li>
-                            </ul>
-                        </div>
+                        {(blocks || [
+                            {
+                                title: "№1 БЛОК",
+                                items: ["РЕСЕПШИН & ХҮЛЭЭЛГИЙН ӨРӨӨ", "ШАЛГАЛТЫН ӨРӨӨ", "АЯЛЛЫН АГЕНТЛАГ", "СҮПЕР МАРКЕТ"]
+                            },
+                            {
+                                title: "№2 БЛОК",
+                                items: ["УУЛЗАЛТЫН ӨРӨӨ", "ХУРЛЫН ӨРӨӨ", "ОНЛАЙН ХИЧЭЭЛИЙН ТАНХИМ", "ГРҮПП ХИЧЭЭЛИЙН ТАНХИМ", "АМРАЛТЫН ӨРӨӨ", "ЗООГИЙН ГАЗАР", "ҮЗВЭРИЙН ТАНХИМ", "НОМЫН САН", "ДУУНЫ ӨРӨӨ", "ЭМНЭЛЭГ", "ФИТНЕСС / GYM / ИОГА"]
+                            },
+                            {
+                                title: "№3 БЛОК",
+                                items: ["БАГШ НАРЫН ӨРӨӨ", "СУРАГЧ НАРЫН ДОТУУР БАЙР", "ЗӨВӨЛГӨӨНИЙ ӨРӨӨ", "ГАДНАХ УСАН САН", "САГСНЫ ТАЛБАЙ"]
+                            }
+                        ]).map((block, index) => (
+                            <div key={index} className="card">
+                                <h3 style={{
+                                    color: 'var(--color-primary)',
+                                    marginBottom: 'var(--spacing-md)',
+                                    fontSize: '1.5rem',
+                                    fontWeight: '700'
+                                }}>
+                                    {block.title}
+                                </h3>
+                                <ul style={{ lineHeight: '2' }}>
+                                    {block.items.map((item, idx) => (
+                                        <li key={idx}>· {item}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        ))}
                     </div>
                 </div>
 
