@@ -33,7 +33,7 @@ const DormitoryFeatures = ({ data }) => {
 
         // Process images
         const processedImages = r.images && r.images.length > 0
-            ? r.images.map(img => img.asset ? urlFor(img).url() : null).filter(Boolean)
+            ? r.images.map(img => img.asset ? urlFor(img).width(1200).auto('format').quality(75).url() : null).filter(Boolean)
             : [];
 
         return {
