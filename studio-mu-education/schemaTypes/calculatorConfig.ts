@@ -10,7 +10,6 @@ export const calculatorConfig = defineType({
             title: 'Configuration Title',
             type: 'string',
             initialValue: 'Main Pricing Configuration',
-            readOnly: true,
         }),
         defineField({
             name: 'courses',

@@ -53,11 +53,43 @@ export default defineConfig({
                   ])
               ),
             S.listItem()
+              .title('CIA')
+              .child(
+                S.list()
+                  .title('CIA Sections')
+                  .items([
+                    S.listItem()
+                      .title('Hero Section')
+                      .child(S.document().schemaType('ciaHero').documentId('ciaHero')),
+                    S.listItem()
+                      .title('Intro Section')
+                      .child(S.document().schemaType('ciaIntro').documentId('ciaIntro')),
+                    S.listItem()
+                      .title('Campus Life')
+                      .child(S.document().schemaType('ciaCampusLife').documentId('ciaCampusLife')),
+                    S.listItem()
+                      .title('Dormitory')
+                      .child(S.document().schemaType('ciaDormitory').documentId('ciaDormitory')),
+                    S.listItem()
+                      .title('Curriculum')
+                      .child(S.document().schemaType('ciaCurriculum').documentId('ciaCurriculum')),
+                    S.listItem()
+                      .title('FAQ')
+                      .child(S.document().schemaType('ciaFaq').documentId('ciaFaq')),
+                    S.listItem()
+                      .title('Student Improvement')
+                      .child(S.document().schemaType('ciaStudentImprovement').documentId('ciaStudentImprovement')),
+                    S.listItem()
+                      .title('Calculator Configuration')
+                      .child(S.document().schemaType('calculatorConfig').documentId('calculatorConfig')),
+                  ])
+              ),
+            S.listItem()
               .title('Appointment Calendar')
               .child(S.document().schemaType('appointmentCalendar').documentId('appointmentCalendar')),
             // Default list items except the ones we mapped
             ...S.documentTypeListItems().filter(
-              (listItem: any) => !['hero', 'whoWeHelp', 'process', 'services', 'about', 'cta', 'testimonials', 'socialProof', 'home', 'appointmentCalendar', 'faq'].includes(listItem.getId())
+              (listItem: any) => !['hero', 'whoWeHelp', 'process', 'services', 'about', 'cta', 'testimonials', 'socialProof', 'home', 'appointmentCalendar', 'faq', 'ciaHero', 'ciaIntro', 'ciaCampusLife', 'ciaDormitory', 'ciaCurriculum', 'ciaFaq', 'ciaStudentImprovement', 'calculatorConfig'].includes(listItem.getId())
             ),
           ]),
     }),

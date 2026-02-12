@@ -5,7 +5,7 @@ import improvement3 from '../assets/improvement-3.jpg';
 import improvement4 from '../assets/improvement-4.jpg';
 import improvement5 from '../assets/improvement-5.jpg';
 
-const StudentImprovement = () => {
+const StudentImprovement = ({ data }) => {
     const [lightboxOpen, setLightboxOpen] = useState(false);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const scrollRef = useRef(null);
@@ -54,6 +54,42 @@ const StudentImprovement = () => {
         }
     };
 
+    // Helper to render description blocks
+    const renderDescription = () => {
+        if (!data || !data.description) {
+            return (
+                <>
+                    <p style={{
+                        fontSize: '1.1rem',
+                        lineHeight: '1.8',
+                        color: 'var(--color-text-muted)',
+                        marginBottom: 'var(--spacing-md)'
+                    }}>
+                        Манай оюутнууд эрчимжүүлсэн сургалтын хөтөлбөр, чадварлаг багш нарын ачаар оноогоо тогтмол, гайхалтайгаар ахиулж чаддаг.
+                    </p>
+                    <p style={{
+                        fontSize: '1.1rem',
+                        lineHeight: '1.8',
+                        color: 'var(--color-text-muted)'
+                    }}>
+                        IELTS, TOEIC гээд бүх төрлийн шалгалтанд бид оюутан бүрийн ахиц дэвшлийг нарийн хянаж, зорьсон оноондоо хүрэхэд нь тусалдаг.
+                    </p>
+                </>
+            );
+        }
+
+        return data.description.map((block, index) => (
+            <p key={index} style={{
+                fontSize: '1.1rem',
+                lineHeight: '1.8',
+                color: 'var(--color-text-muted)',
+                marginBottom: 'var(--spacing-md)'
+            }}>
+                {block.children.map(c => c.text).join('')}
+            </p>
+        ));
+    };
+
     return (
         <section className="section">
             <div className="container">
@@ -71,23 +107,9 @@ const StudentImprovement = () => {
                             marginBottom: 'var(--spacing-md)',
                             fontWeight: '700'
                         }}>
-                            СУРАГЧДЫН АХИЦ ДЭВШИЛ
+                            {data ? data.title : 'СУРАГЧДЫН АХИЦ ДЭВШИЛ'}
                         </h2>
-                        <p style={{
-                            fontSize: '1.1rem',
-                            lineHeight: '1.8',
-                            color: 'var(--color-text-muted)',
-                            marginBottom: 'var(--spacing-md)'
-                        }}>
-                            Манай оюутнууд эрчимжүүлсэн сургалтын хөтөлбөр, чадварлаг багш нарын ачаар оноогоо тогтмол, гайхалтайгаар ахиулж чаддаг.
-                        </p>
-                        <p style={{
-                            fontSize: '1.1rem',
-                            lineHeight: '1.8',
-                            color: 'var(--color-text-muted)'
-                        }}>
-                            IELTS, TOEIC гээд бүх төрлийн шалгалтанд бид оюутан бүрийн ахиц дэвшлийг нарийн хянаж, зорьсон оноондоо хүрэхэд нь тусалдаг.
-                        </p>
+                        {renderDescription()}
                     </div>
 
                     {/* Right Side - Large Auto-Sliding Gallery */}

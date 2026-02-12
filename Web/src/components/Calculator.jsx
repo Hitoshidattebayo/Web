@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { addWeeks } from 'date-fns';
 import './Calculator.css';
-import { createClient } from '@sanity/client';
+import { client } from '../sanity/client';
 
-const sanityClient = createClient({
-    projectId: import.meta.env.VITE_SANITY_PROJECT_ID,
-    dataset: import.meta.env.VITE_SANITY_DATASET,
-    apiVersion: '2023-05-03',
-    useCdn: true,
-});
+// Simple in-memory cache to prevent redundant fetches
+let pricingCache = null;
 
 const Calculator = () => {
     // State for pricing data from Sanity
@@ -20,10 +16,20 @@ const Calculator = () => {
     const periodOptions = Array.from({ length: 8 }, (_, i) => i + 1);
 
     // Fetch pricing data from Sanity
+    // Fetch pricing data from Sanity
     useEffect(() => {
         const fetchPricingData = async () => {
+            // 1. Check Cache First
+            if (pricingCache) {
+                setCoursePrices(pricingCache.coursePrices);
+                setDormPrices(pricingCache.dormPrices);
+                setDormLabels(pricingCache.dormLabels);
+                setIsLoading(false);
+                return;
+            }
+
             try {
-                const data = await sanityClient.fetch(`*[_type == "calculatorConfig"][0]{
+                const data = await client.fetch(`*[_type == "calculatorConfig"][0]{
                     courses[]{
                         name,
                         priceList[]{weeks, price}
@@ -45,7 +51,6 @@ const Calculator = () => {
                         });
                         courseData[course.name] = prices;
                     });
-                    setCoursePrices(courseData);
 
                     // Transform dormitory data
                     const dormData = {};
@@ -58,8 +63,18 @@ const Calculator = () => {
                         dormData[dorm.name] = prices;
                         dormLabelData[dorm.name] = dorm.label;
                     });
+
+                    // Update State
+                    setCoursePrices(courseData);
                     setDormPrices(dormData);
                     setDormLabels(dormLabelData);
+
+                    // Update Cache
+                    pricingCache = {
+                        coursePrices: courseData,
+                        dormPrices: dormData,
+                        dormLabels: dormLabelData
+                    };
                 }
             } catch (error) {
                 console.error('Error fetching pricing data:', error);

@@ -1,82 +1,83 @@
 import React, { useState } from 'react';
 import { MessageCircle, FileText, GraduationCap, Briefcase, Star, Users } from 'lucide-react';
+import { urlFor } from '../sanity/client';
 import training1 from '../assets/training-1.png';
 import training2 from '../assets/training-2.png';
 import training3 from '../assets/training-3.png';
 import training4 from '../assets/training-4.png';
 import training5 from '../assets/training-5.png';
 
-const Curriculum = () => {
+const Curriculum = ({ data }) => {
     const [selectedItem, setSelectedItem] = useState(null);
 
-    const curriculumData = [
+    // Use passed data or fallback to empty array (or initial hardcoded data if we want to keep it as fallback)
+    // For now, let's assume if data is passed, we use it. If not, we use the hardcoded default (which I will keep for now to avoid breaking while migrating).
+    // Actually, to make it clean, I should just use `data || defaultData`.
+    // But since I am editing the file, I can just replace the definition.
+
+    // Default hardcoded data (moved from inside component to outside or kept as fallback)
+    const defaultData = [
         {
-            id: 'esl',
-            title: 'CAMBRIDGE ESL',
+            id: 'regular_esl',
+            title: 'REGULAR ESL',
             icon: <MessageCircle size={40} />,
-            description: 'Cambridge-ийн албан ёсны магадлан итгэмжлэлтэй хөтөлбөр.',
+            description: 'Ерөнхий англи хэл – суурь, жигд ахиц.',
             details: [
                 {
-                    type: 'Хөтөлбөрийн тухай',
+                    type: 'Хэнд тохирох вэ?',
                     items: [
-                        { name: 'Cambridge Standard', desc: 'CIA нь Cambridge-ийн албан ёсны магадлан итгэмжлэлтэй, бүрэн хүлээн зөвшөөрөгдсөн тул бид эдгээр шалгалтыг заах чадвар бүхий, туршлагатай мэргэжлийн багш нартай. Бид суралцагчдадаа Cambridge-ийн стандартад нийцсэн, Англи хэлний мэдлэг, ур чадварыг үр дүнтэй эзэмшихийг бүрэн баталгаажуулдаг.' }
+                        { name: 'Анхан–дунд шат', desc: 'Англи хэлээ анхан–дунд түвшнээс эхлүүлэх гэж байгаа.' },
+                        { name: 'Ярихаас айдаг', desc: 'Ярихаас айдаг, сандардаг хүмүүст.' },
+                        { name: 'Тайван орчин', desc: 'Тайван орчинд, ачаалал багатай сурахыг хүсдэг хүнд.' }
                     ]
                 },
                 {
-                    type: '4 Түвшний Бэлтгэл',
+                    type: 'Юу сурна вэ?',
                     items: [
-                        { name: 'Түвшингүүд', desc: 'FRIST (FCE), ADVANCED (CAE), KEY (KET), PRELIMINARY (PET)' },
-                        { name: 'Шалгалтын бүтэц', desc: 'Унших болон Хэлний хэрэглээ, Сонсгол, Ярих, Бичих (Нийт 3–4 цаг)' }
+                        { name: '🗣 Өдөр тутмын яриа', desc: '' },
+                        { name: '👂 Сонсоод ойлгох чадвар', desc: '' },
+                        { name: '📖 Унших чадвар', desc: '' },
+                        { name: '✍️ Бичих чадвар', desc: '' },
+                        { name: '🧠 Дүрэм, үгс', desc: '' }
+                    ]
+                },
+                {
+                    type: 'Ямар давуу талтай вэ?',
+                    items: [
+                        { name: 'Ачаалал багатай', desc: '' },
+                        { name: 'Ая тухтай, стресс багатай', desc: '' }
                     ]
                 }
             ]
         },
         {
-            id: 'toeic',
-            title: 'TOEIC PREPARATION',
-            icon: <FileText size={40} />,
-            description: 'Бизнес болон академик зорилгоор Англи хэлийг ашиглах чадвар.',
-            details: [
-                {
-                    type: 'Курсүүд',
-                    items: [
-                        { name: 'PRE TOEIC', desc: 'Хамгийн бага хугацаа: 1 долоо хоног. Бүртгүүлэхэд шаардлагагүй. Энэ нь TOEIC-ийн Regular болон Guarantee курст бэлтгэх зориулалттай суурь бэлтгэл хөтөлбөр юм.' },
-                        { name: 'REGULAR TOEIC', desc: 'Хамгийн бага хугацаа: 4 долоо хоног. TOEIC 380+ эсвэл IELTS 3.0+ түвшинтэй байх шаардлагатай. Жишээ шалгалтын материал дээр суурилсан, өдөр тутмын ажил, оффисын нөхцөл байдалтай уялдуулсан хөтөлбөр.' },
-                        { name: 'Guarantee TOEIC', desc: 'Хамгийн бага хугацаа: 12 долоо хоног. Зорилтот оноондоо хүрэхийг баталгаажуулдаг системтэй бэлтгэл.' }
-                    ]
-                },
-                {
-                    type: 'Зорилтот оноо & Шаардлага',
-                    items: [
-                        { name: '600 оноо', desc: 'Эхлэх түвшин: TOEIC 400 / IELTS 3.0' },
-                        { name: '700 оноо', desc: 'Эхлэх түвшин: TOEIC 600 / IELTS 4.0' },
-                        { name: '800 оноо', desc: 'Эхлэх түвшин: TOEIC 650 / IELTS 5.0' },
-                        { name: '900 оноо', desc: 'Эхлэх түвшин: TOEIC 790 / IELTS 6.0' }
-                    ]
-                }
-            ]
-        },
-        {
-            id: 'ielts',
-            title: 'IELTS PREPARATION',
+            id: 'ielts_toeic',
+            title: 'IELTS / TOEIC',
             icon: <GraduationCap size={40} />,
-            description: 'Гадаадад сурах, ажиллах, амьдрах хүсэлтэй хүмүүст зориулсан.',
+            description: 'Шалгалтанд зориулсан тусгай бэлтгэл.',
             details: [
                 {
-                    type: 'Курсүүд',
+                    type: 'Хэнд тохирох вэ?',
                     items: [
-                        { name: 'PRE IELTS', desc: 'Хамгийн бага хугацаа: 1 долоо хоног. Бүртгүүлэхэд шаардлагагүй. IELTS + ESL хосолсон хичээлүүдээр дараагийн шатанд бэлтгэнэ.' },
-                        { name: 'REGULAR IELTS', desc: 'Хамгийн бага хугацаа: 4 долоо хоног. IELTS 3.5+ эсвэл TOEIC 480+ шаардлагатай. Бүх модулиудад (унших, бичих, ярих, сонсох) уян хатан хугацаанд бэлтгэнэ.' },
-                        { name: 'Guarantee IELTS', desc: 'Хамгийн бага хугацаа: 12 долоо хоног. Зорилтот Band Score-доо хүрэхийг баталгаажуулна.' }
+                        { name: 'Зорилготой', desc: 'IELTS / TOEIC оноо авах зорилготой.' },
+                        { name: 'Суурьтай', desc: 'Аль хэдийн суурьтай хүмүүст.' }
                     ]
                 },
                 {
-                    type: 'Зорилтот оноо & Шаардлага',
+                    type: 'Юу сурах вэ?',
                     items: [
-                        { name: '5.5 оноо', desc: 'Эхлэх түвшин: IELTS 3.5 / TOEIC 480' },
-                        { name: '6.0 оноо', desc: 'Эхлэх түвшин: IELTS 5.0 / TOEIC 680' },
-                        { name: '6.5 оноо', desc: 'Эхлэх түвшин: IELTS 6.0 / TOEIC 790' },
-                        { name: '7.0 оноо', desc: 'Эхлэх түвшин: IELTS 6.5 / TOEIC 850' }
+                        { name: '📊 Шалгалтын бүтэц, стратеги', desc: '' },
+                        { name: '✍️ Бичих чадвар', desc: 'Шалгалтын бичих чадваруудад таныг бүрэн бэлдэнэ.' },
+                        { name: '🗣 Ярианы шалгалт', desc: 'Ярианы шалгалтыг тань төвөггүй болгох.' },
+                        { name: '📈 Оноо өсгөх техник', desc: '' }
+                    ]
+                },
+                {
+                    type: 'Ямар давуу талтай вэ?',
+                    items: [
+                        { name: 'Бодит оноо', desc: 'Танд шалгалтын бодит оноог тань харуулах.' },
+                        { name: 'Туршлагатай багш нар', desc: 'Багш нар нь шалгалтын туршлага өндөр.' },
+                        { name: 'Урьдчилсан шалгалт', desc: 'IELTS, TOEIC-ийн урьдчилсан шалгалт өгдөг.' }
                     ]
                 }
             ]
@@ -85,19 +86,31 @@ const Curriculum = () => {
             id: 'business',
             title: 'BUSINESS ENGLISH',
             icon: <Briefcase size={40} />,
-            description: 'Бизнесийн орчинд шаардлагатай мэргэжлийн Англи хэл.',
+            description: 'Ажил, бизнесийн англи хэл.',
             details: [
                 {
-                    type: 'Зорилго & Ур чадвар',
+                    type: 'Хэнд тохирох вэ?',
                     items: [
-                        { name: 'Үндсэн чадварууд', desc: 'Англиар презентаци бэлтгэх, хурал уулзалт удирдах/оролцох, хэлэлцээр хийх, албан бичиг баримт боловсруулах.' }
+                        { name: 'Ажил хэрэгч', desc: 'Ажил дээрээ англи хэрэглэх шаардлагатай.' },
+                        { name: 'Харилцаа', desc: 'Гадаад харилцагч нартай харьцах.' },
+                        { name: 'Карьер', desc: 'Карьерээ ахиулах зорилготой.' }
                     ]
                 },
                 {
-                    type: 'Түвшингийн шаардлага',
+                    type: 'Юу сурах вэ?',
                     items: [
-                        { name: 'Beginner', desc: 'IELTS 3.5+ / TOEIC 380+ түвшинтэй байх шаардлагатай' },
-                        { name: 'Intermediate', desc: 'IELTS 5.0+ / TOEIC 580+ түвшинтэй байх шаардлагатай' }
+                        { name: '📧 Имэйл бичих', desc: '' },
+                        { name: '🗣 Уулзалт, танилцуулга бэлдэх', desc: '' },
+                        { name: '🤝 Хэлэлцээр', desc: 'Англи хэл дээр тохиролцоо хийхэд.' },
+                        { name: '🧠 Мэргэжлийн үг хэллэг', desc: '' }
+                    ]
+                },
+                {
+                    type: 'Ямар давуу талтай вэ?',
+                    items: [
+                        { name: 'Ажлын орчин', desc: 'Ажлын орчинд хэрэглэгдэх англи хэл.' },
+                        { name: 'Formal + confident яриа', desc: '' },
+                        { name: 'Өсөх боломж', desc: 'Цалин, боломж өсөх суурь.' }
                     ]
                 }
             ]
@@ -133,6 +146,25 @@ const Curriculum = () => {
         }
     ];
 
+    const curriculumData = data && data.length > 0 ? data.map(item => {
+        // Find matching default item to fallback for 'details' if missing - Case insensitive match
+        const defaultItem = defaultData.find(d => d.title.toLowerCase() === (item.title || '').toLowerCase());
+
+        return {
+            ...item,
+            // Map string icons to components if necessary, or just use if passed as node
+            icon: item.icon === 'MessageCircle' ? <MessageCircle size={40} /> :
+                item.icon === 'GraduationCap' ? <GraduationCap size={40} /> :
+                    item.icon === 'Briefcase' ? <Briefcase size={40} /> :
+                        item.icon === 'Star' ? <Star size={40} /> :
+                            item.icon === 'Users' ? <Users size={40} /> :
+                                // If it's already a component (default data)
+                                item.icon || defaultItem?.icon || <MessageCircle size={40} />,
+            // Fallback for details if missing in Sanity data
+            details: item.details || defaultItem?.details || []
+        };
+    }) : defaultData;
+
     return (
         <section className="section" style={{ backgroundColor: 'var(--color-background-alt)' }}>
             <div className="container">
@@ -154,8 +186,7 @@ const Curriculum = () => {
                             textAlign: 'center',
                             padding: 'var(--spacing-lg) var(--spacing-md)',
                             border: '1px solid transparent',
-                            minWidth: '250px',
-                            maxWidth: '280px',
+                            /* Widths handled by CSS for responsiveness */
                             flex: '0 0 auto',
                             scrollSnapAlign: 'start',
                             borderRadius: 'var(--radius-md)'
@@ -226,8 +257,11 @@ const Curriculum = () => {
                                 animation: 'scroll-left 30s linear infinite'
                             }}
                         >
-                            {/* Duplicate images for seamless loop */}
-                            {[training1, training2, training3, training4, training5, training1, training2, training3, training4, training5].map((img, index) => (
+                            {/* Use Sanity data or fallback to local images */}
+                            {(data && data.trainingSystems && data.trainingSystems.length > 0
+                                ? [...data.trainingSystems, ...data.trainingSystems] // Duplicate for loop
+                                : [training1, training2, training3, training4, training5, training1, training2, training3, training4, training5]
+                            ).map((img, index) => (
                                 <div
                                     key={index}
                                     style={{
@@ -240,8 +274,8 @@ const Curriculum = () => {
                                     }}
                                 >
                                     <img
-                                        src={img}
-                                        alt={`Training system ${(index % 5) + 1}`}
+                                        src={typeof img === 'string' ? img : urlFor(img).url()}
+                                        alt={`Training system`}
                                         style={{
                                             maxWidth: '100%',
                                             maxHeight: '100%',
@@ -305,28 +339,41 @@ const Curriculum = () => {
                     @media screen and (min-width: 769px) {
                         .curriculum-cards-container {
                             display: grid;
+                            /* Default to 3 columns on tablet/small laptop */
                             grid-template-columns: repeat(3, 1fr);
                             gap: var(--spacing-lg);
                             width: 100%;
                             max-width: 1200px;
                             margin: 0 auto;
                             justify-items: center;
-                            overflow-x: visible; /* Override mobile style */
-                            overflow-y: visible; /* Override mobile style */
-                            padding: 0; /* Override mobile padding if needed, or keep it */
+                            overflow-x: visible;
+                            overflow-y: visible;
+                            padding: 0;
                         }
                         
                         .curriculum-card {
                             width: 100%;
-                            max-width: none;
+                            max-width: 350px; /* Allow wider cards on tablet */
                             height: 100%;
                             display: flex;
                             flex-direction: column;
                         }
                         
-                        /* Push the description to the bottom if needed or ensure consistent height */
                         .curriculum-card > div:first-child {
                             align-self: center;
+                        }
+                    }
+
+                    /* Large Screens: 5 Columns to match screenshot */
+                    @media screen and (min-width: 1100px) {
+                        .curriculum-cards-container {
+                            grid-template-columns: repeat(5, 1fr);
+                            max-width: 1400px; /* Allow more width for 5 columns */
+                        }
+
+                        .curriculum-card {
+                            min-width: 0; /* Allow shrinking */
+                            max-width: none; /* Let grid control width */
                         }
                     }
                     
@@ -475,14 +522,16 @@ const Curriculum = () => {
                                                             marginBottom: '0.4rem',
                                                             lineHeight: '1.3'
                                                         }}>{item.name}</strong>
-                                                        <p style={{
-                                                            color: 'var(--color-text-muted)',
-                                                            marginTop: '0',
-                                                            lineHeight: '1.7',
-                                                            fontSize: '0.95rem'
-                                                        }}>
-                                                            {item.desc}
-                                                        </p>
+                                                        {item.desc && (
+                                                            <p style={{
+                                                                color: 'var(--color-text-muted)',
+                                                                marginTop: '0',
+                                                                lineHeight: '1.7',
+                                                                fontSize: '0.95rem'
+                                                            }}>
+                                                                {item.desc}
+                                                            </p>
+                                                        )}
                                                     </li>
                                                 ))}
                                             </ul>
@@ -494,7 +543,7 @@ const Curriculum = () => {
                     </div>
                 )}
             </div>
-        </section>
+        </section >
     );
 };
 

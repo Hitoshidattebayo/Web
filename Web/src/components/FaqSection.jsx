@@ -2,21 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { ChevronDown, ChevronUp, HelpCircle } from 'lucide-react';
 import { client } from '../sanity/client';
 
-const FaqSection = () => {
+const FaqSection = ({ customFaqs, title }) => {
     const [activeIndex, setActiveIndex] = useState(null);
     const [faqData, setFaqData] = useState(null);
 
     useEffect(() => {
-        const fetchFaqs = async () => {
-            try {
-                const data = await client.fetch(`*[_type == "faq"][0]`);
-                if (data) setFaqData(data);
-            } catch (error) {
-                console.error("Failed to fetch FAQs:", error);
-            }
-        };
-        fetchFaqs();
-    }, []);
+        // Only fetch from Sanity if no custom FAQs provided
+        if (!customFaqs) {
+            const fetchFaqs = async () => {
+                try {
+                    const data = await client.fetch(`*[_type == "faq"][0]`);
+                    if (data) setFaqData(data);
+                } catch (error) {
+                    console.error("Failed to fetch FAQs:", error);
+                }
+            };
+            fetchFaqs();
+        }
+    }, [customFaqs]);
 
     const toggleAccordion = (index) => {
         setActiveIndex(activeIndex === index ? null : index);
@@ -45,8 +48,8 @@ const FaqSection = () => {
         }
     ];
 
-    const faqs = faqData?.faqs || defaultFaqs;
-    const sectionTitle = faqData?.title || "Түгээмэл Асуултууд";
+    const faqs = customFaqs || faqData?.faqs || defaultFaqs;
+    const sectionTitle = title || faqData?.title || "Түгээмэл Асуултууд";
 
     return (
         <section style={{ padding: '4rem 0', backgroundColor: '#f8f9fa' }}>
