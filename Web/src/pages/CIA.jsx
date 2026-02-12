@@ -429,6 +429,8 @@ const CampusLifeGallery = ({ galleryData }) => {
     );
 };
 
+import Loading from '../components/Loading';
+
 const CIA = () => {
     const canvasRef = useRef(null);
     const ctaCanvasRef = useRef(null);
@@ -439,39 +441,46 @@ const CIA = () => {
     useParticleAnimation(ctaCanvasRef);
 
     const [cmsData, setCmsData] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const query = `{
-                "hero": *[_type == "ciaHero"][0] {
-                ...,
-                "videoUrl": backgroundVideo.asset->url
+                    "hero": *[_type == "ciaHero"][0] {
+                        ...,
+                        "videoUrl": backgroundVideo.asset->url
                     },
-            "intro": *[_type == "ciaIntro"][0] {
-                ...,
-                "videoFileUrl": videoFile.asset->url
+                    "intro": *[_type == "ciaIntro"][0] {
+                        ...,
+                        "videoFileUrl": videoFile.asset->url
                     },
-            "campusLife": *[_type == "ciaCampusLife"][0] {
-                title,
-                categories[]{
-                categoryName,
-                images[]
-            }
+                    "campusLife": *[_type == "ciaCampusLife"][0] {
+                        title,
+                        categories[]{
+                            categoryName,
+                            images[]
+                        }
                     },
-            "dormitory": *[_type == "ciaDormitory"][0],
-            "curriculum": *[_type == "ciaCurriculum"][0],
-            "faq": *[_type == "ciaFaq"][0],
-            "studentImprovement": *[_type == "ciaStudentImprovement"][0]
+                    "dormitory": *[_type == "ciaDormitory"][0],
+                    "curriculum": *[_type == "ciaCurriculum"][0],
+                    "faq": *[_type == "ciaFaq"][0],
+                    "studentImprovement": *[_type == "ciaStudentImprovement"][0]
                 }`;
                 const result = await client.fetch(query);
                 setCmsData(result);
             } catch (error) {
                 console.error("Error fetching CIA data:", error);
+            } finally {
+                setIsLoading(false);
             }
         };
         fetchData();
     }, []);
+
+    if (isLoading) {
+        return <Loading />;
+    }
 
     const ciaFaqs = cmsData?.faq?.faqs || [
         {
