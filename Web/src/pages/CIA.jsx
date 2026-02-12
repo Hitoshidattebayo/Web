@@ -14,6 +14,7 @@ import life4 from '../assets/life-4.jpg';
 import life5 from '../assets/life-5.jpg';
 import { Dumbbell, Languages, Building2, Play, Calendar } from 'lucide-react';
 import { client, urlFor } from '../sanity/client';
+import useParticleAnimation from '../hooks/useParticleAnimation';
 
 // CIA Intro Video Component (9:16 Mock)
 const CIAIntroVideo = ({ videoUrl, videoFileUrl }) => {
@@ -106,7 +107,7 @@ const CampusLifeGallery = ({ galleryData }) => {
 
     // Process nested data from Sanity into flat format for internal logic
     // Input: categories: [{ categoryName: 'Gym', images: [...] }, ...]
-    // Output: Flat list of { category: 'Gym', asset: ... } for 'All' view, and specific category logic
+    // Output: Flat list of { category: 'Gym', url: '...' } for 'All' view, and specific category logic
 
     let processedImages = [];
     let availableCategories = ['All'];
@@ -114,22 +115,31 @@ const CampusLifeGallery = ({ galleryData }) => {
     if (galleryData && galleryData.length > 0) {
         // If data comes from new nested structure (categories array)
         if (galleryData[0].categoryName) {
+            const categoriesSet = new Set(['All']);
             galleryData.forEach(cat => {
-                availableCategories.push(cat.categoryName);
-                if (cat.images) {
-                    cat.images.forEach(img => {
-                        processedImages.push({
-                            category: cat.categoryName,
-                            asset: img.asset
+                if (cat.categoryName) {
+                    categoriesSet.add(cat.categoryName);
+                    if (cat.images) {
+                        cat.images.forEach(img => {
+                            if (img.asset) {
+                                processedImages.push({
+                                    category: cat.categoryName,
+                                    url: urlFor(img).url()
+                                });
+                            }
                         });
-                    });
+                    }
                 }
             });
+            availableCategories = Array.from(categoriesSet);
         }
         // Fallback for old flat structure (if any data remains or during migration)
         else if (galleryData[0].category) {
             availableCategories = ['All', ...new Set(galleryData.map(item => item.category).filter(Boolean))];
-            processedImages = galleryData;
+            processedImages = galleryData.map(item => ({
+                category: item.category,
+                url: item.asset ? urlFor(item.asset).url() : null // Attempt to resolve URL for old structure
+            })).filter(item => item.url);
         }
     }
 
@@ -185,11 +195,11 @@ const CampusLifeGallery = ({ galleryData }) => {
 
     if (galleryData && galleryData.length > 0) {
         if (activeCategory === 'All') {
-            currentImages = processedImages.map(item => urlFor(item).url());
+            currentImages = processedImages.map(item => item.url);
         } else {
             currentImages = processedImages
                 .filter(item => item.category === activeCategory)
-                .map(item => urlFor(item).url());
+                .map(item => item.url);
         }
     } else {
         currentImages = categoryImages[activeCategory] || allImages;
@@ -326,101 +336,98 @@ const CampusLifeGallery = ({ galleryData }) => {
                             to { opacity: 1; }
                         }
                     `}</style>
+
+                    {/* Navigation Arrows */}
+                    {currentImages.length > 1 && (
+                        <>
+                            <button
+                                onClick={prevSlide}
+                                style={{
+                                    position: 'absolute',
+                                    left: '10px',
+                                    top: '50%',
+                                    transform: 'translateY(-50%)',
+                                    background: 'rgba(255, 255, 255, 0.8)',
+                                    border: 'none',
+                                    borderRadius: '50%',
+                                    width: '40px',
+                                    height: '40px',
+                                    cursor: 'pointer',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                                    transition: 'background 0.3s'
+                                }}
+                                onMouseEnter={(e) => e.currentTarget.style.background = 'white'}
+                                onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.8)'}
+                            >
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                            </button>
+                            <button
+                                onClick={nextSlide}
+                                style={{
+                                    position: 'absolute',
+                                    right: '10px',
+                                    top: '50%',
+                                    transform: 'translateY(-50%)',
+                                    background: 'rgba(255, 255, 255, 0.8)',
+                                    border: 'none',
+                                    borderRadius: '50%',
+                                    width: '40px',
+                                    height: '40px',
+                                    cursor: 'pointer',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                                    transition: 'background 0.3s'
+                                }}
+                                onMouseEnter={(e) => e.currentTarget.style.background = 'white'}
+                                onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255, 255, 255, 0.8)'}
+                            >
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </button>
+                        </>
+                    )}
+
+                    {/* Dots Indicator */}
+                    {currentImages.length > 1 && (
+                        <div style={{
+                            position: 'absolute',
+                            bottom: '20px',
+                            left: '50%',
+                            transform: 'translateX(-50%)',
+                            display: 'flex',
+                            gap: '8px'
+                        }}>
+                            {currentImages.map((_, idx) => (
+                                <button
+                                    key={idx}
+                                    onClick={() => setCurrentIndex(idx)}
+                                    style={{
+                                        width: '10px',
+                                        height: '10px',
+                                        borderRadius: '50%',
+                                        border: 'none',
+                                        backgroundColor: currentIndex === idx ? 'white' : 'rgba(255, 255, 255, 0.5)',
+                                        cursor: 'pointer',
+                                        transition: 'background 0.3s'
+                                    }}
+                                />
+                            ))}
+                        </div>
+                    )}
                 </div>
 
-                {/* Left Arrow */}
-                <button
-                    onClick={prevSlide}
-                    style={{
-                        position: 'absolute',
-                        left: '20px',
-                        top: '50%',
-                        transform: 'translateY(-50%)',
-                        background: 'rgba(255, 255, 255, 0.9)',
-                        border: 'none',
-                        borderRadius: '50%',
-                        width: '50px',
-                        height: '50px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        cursor: 'pointer',
-                        boxShadow: 'var(--shadow-lg)',
-                        color: 'var(--color-primary)',
-                        fontSize: '1.8rem',
-                        zIndex: 10,
-                        opacity: currentImages.length > 1 ? 1 : 0,
-                        pointerEvents: currentImages.length > 1 ? 'auto' : 'none'
-                    }}
-                >
-                    ❮
-                </button>
-
-                {/* Right Arrow */}
-                <button
-                    onClick={nextSlide}
-                    style={{
-                        position: 'absolute',
-                        right: '20px',
-                        top: '50%',
-                        transform: 'translateY(-50%)',
-                        background: 'rgba(255, 255, 255, 0.9)',
-                        border: 'none',
-                        borderRadius: '50%',
-                        width: '50px',
-                        height: '50px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        cursor: 'pointer',
-                        boxShadow: 'var(--shadow-lg)',
-                        color: 'var(--color-primary)',
-                        fontSize: '1.8rem',
-                        zIndex: 10,
-                        opacity: currentImages.length > 1 ? 1 : 0,
-                        pointerEvents: currentImages.length > 1 ? 'auto' : 'none'
-                    }}
-                >
-                    ❯
-                </button>
-
-                {/* Indicator Dots */}
-                <div style={{
-                    position: 'absolute',
-                    bottom: '20px',
-                    left: '50%',
-                    transform: 'translateX(-50%)',
-                    display: 'flex',
-                    gap: '10px',
-                    zIndex: 10
-                }}>
-                    {currentImages.map((_, index) => (
-                        <div
-                            key={index}
-                            onClick={() => setCurrentIndex(index)}
-                            style={{
-                                width: '12px',
-                                height: '12px',
-                                borderRadius: '50%',
-                                background: currentIndex === index ? 'var(--color-primary)' : 'rgba(255, 255, 255, 0.7)',
-                                cursor: 'pointer',
-                                transition: 'all 0.3s ease',
-                                border: currentIndex === index ? '2px solid white' : 'none'
-                            }}
-                        />
-                    ))}
+                {/* Category Label (Optional Context) */}
+                <div style={{ textAlign: 'center', marginTop: '1rem', color: 'var(--color-text-muted)', fontStyle: 'italic' }}>
+                    Showing: {activeCategory}
                 </div>
-            </div>
-
-            {/* Category Label (Optional Context) */}
-            <div style={{ textAlign: 'center', marginTop: '1rem', color: 'var(--color-text-muted)', fontStyle: 'italic' }}>
-                Showing: {activeCategory}
             </div>
         </div>
     );
 };
-
-import useParticleAnimation from '../hooks/useParticleAnimation';
 
 const CIA = () => {
     const canvasRef = useRef(null);
@@ -437,19 +444,25 @@ const CIA = () => {
         const fetchData = async () => {
             try {
                 const query = `{
-                    "hero": *[_type == "ciaHero"][0] {
-                        ...,
-                        "videoUrl": backgroundVideo.asset->url
+                "hero": *[_type == "ciaHero"][0] {
+                ...,
+                "videoUrl": backgroundVideo.asset->url
                     },
-                    "intro": *[_type == "ciaIntro"][0] {
-                        ...,
-                        "videoFileUrl": videoFile.asset->url
+            "intro": *[_type == "ciaIntro"][0] {
+                ...,
+                "videoFileUrl": videoFile.asset->url
                     },
-                    "campusLife": *[_type == "ciaCampusLife"][0],
-                    "dormitory": *[_type == "ciaDormitory"][0],
-                    "curriculum": *[_type == "ciaCurriculum"][0],
-                    "faq": *[_type == "ciaFaq"][0],
-                    "studentImprovement": *[_type == "ciaStudentImprovement"][0]
+            "campusLife": *[_type == "ciaCampusLife"][0] {
+                title,
+                categories[]{
+                categoryName,
+                images[]
+            }
+                    },
+            "dormitory": *[_type == "ciaDormitory"][0],
+            "curriculum": *[_type == "ciaCurriculum"][0],
+            "faq": *[_type == "ciaFaq"][0],
+            "studentImprovement": *[_type == "ciaStudentImprovement"][0]
                 }`;
                 const result = await client.fetch(query);
                 setCmsData(result);
